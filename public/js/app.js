@@ -1881,6 +1881,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'Home'
 });
@@ -19553,7 +19561,7 @@ var render = function() {
                 _c(
                   "a",
                   { staticClass: "display-1 logo", attrs: { href: "/" } },
-                  [_vm._v("The Magic Date Ball")]
+                  [_vm._v("Magic Date Ball")]
                 )
               ])
             ],
@@ -19563,7 +19571,7 @@ var render = function() {
           _c("v-content", [_c("router-view")], 1),
           _vm._v(" "),
           _c("div", { staticClass: "footer caption text-center mt-5 mb-3" }, [
-            _vm._v("\n            The Magic Date Ball © 2019\n        ")
+            _vm._v("\n            Magic Date Ball © 2019\n        ")
           ])
         ],
         1
@@ -19594,7 +19602,50 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_vm._v("\n    Home\n")])
+  return _c(
+    "div",
+    { attrs: { id: "home" } },
+    [
+      _c(
+        "v-container",
+        { staticClass: "fill-height", attrs: { fluid: "" } },
+        [
+          _c(
+            "v-row",
+            { attrs: { align: "center", justify: "center" } },
+            [
+              _c(
+                "v-col",
+                {
+                  staticClass: "text-center",
+                  attrs: { cols: "12", sm: "8", md: "4" }
+                },
+                [
+                  _c(
+                    "v-avatar",
+                    {
+                      staticClass: "elevation-10 text-center",
+                      attrs: { color: "black", size: "250" }
+                    },
+                    [
+                      _c("v-icon", { attrs: { dark: "", size: "100" } }, [
+                        _vm._v("mdi-numeric-8-circle")
+                      ])
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

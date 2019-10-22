@@ -3,7 +3,7 @@
         <v-app class="inspire">
             <v-toolbar color="transparent" flat>
                 <v-toolbar-title>
-                    <a href="/" class="display-1 logo">The Magic Date Ball</a>
+                    <a href="/" class="display-1 logo">Magic Date Ball</a>
                 </v-toolbar-title>
             </v-toolbar>
             <v-content>
@@ -11,7 +11,7 @@
             </v-content>
 
             <div class="footer caption text-center mt-5 mb-3">
-                The Magic Date Ball &copy; 2019
+                Magic Date Ball &copy; 2019
             </div>
         </v-app>
     </div>
