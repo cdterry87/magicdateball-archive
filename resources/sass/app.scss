@@ -1,0 +1,56 @@
+@import '~vuetify/dist/vuetify.min.css';
+@import '~@mdi/font/css/materialdesignicons.min.css';
+
+html, body {
+    color: #fff;
+    font-weight: 200;
+    height: 100vh;
+    margin: 0;
+}
+
+body, #inspire.application, .v-application {
+    background: #DA4453 !important;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #89216B, #DA4453) !important;  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #89216B, #DA4453) !important; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    color: white !important;
+}
+
+body, #inspire.application, .v-application, .v-application .logo, .logo {
+    font-family: 'Teko', sans-serif !important;
+}
+
+a {
+    color: inherit !important;
+    text-decoration: none !important;
+}
+
+.v-alert {
+    margin: 0 !important;
+}
+
+.v-speed-dial {
+    position: fixed;
+}
+
+.fadein {
+    animation: fadein 2s;
+    -moz-animation: fadein 2s; /* Firefox */
+    -webkit-animation: fadein 2s; /* Safari and Chrome */
+    -o-animation: fadein 2s; /* Opera */
+}
+@keyframes fadein {
+    from {
+        opacity:0;
+    }
+    to {
+        opacity:1;
+    }
+}
+@-moz-keyframes fadein { /* Firefox */
+    from {
+        opacity:0;
+    }
+    to {
+        opacity:1;
+    }
+}
