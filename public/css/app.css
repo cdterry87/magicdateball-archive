@@ -27,9 +27,11 @@ body,
 
 body,
 #inspire.application,
-.v-application,
 .v-application .logo,
-.logo {
+.v-application .title,
+.v-application .display-1,
+.v-application .display-2,
+.v-application .headline {
   font-family: "Teko", sans-serif !important;
 }
 

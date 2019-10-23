@@ -14,3 +14,10 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::prefix('api')->group(function () {
+    Route::get('/search', 'HomeController@search');
+});
+
+// Catch-all route
+Route::get('/{any}', 'HomeController@index')->where('any', '.*');

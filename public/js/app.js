@@ -1851,12 +1851,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'App',
   data: function data() {
@@ -1889,8 +1883,32 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'Home'
+  name: 'Home',
+  data: function data() {
+    return {
+      loading: false,
+      results: []
+    };
+  },
+  methods: {
+    search: function search() {
+      var _this = this;
+
+      this.loading = true;
+      axios.get('/api/search').then(function (response) {
+        _this.results = response.data;
+        _this.loading = false;
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -19553,21 +19571,6 @@ var render = function() {
         "v-app",
         { staticClass: "inspire" },
         [
-          _c(
-            "v-toolbar",
-            { attrs: { color: "transparent", flat: "" } },
-            [
-              _c("v-toolbar-title", [
-                _c(
-                  "a",
-                  { staticClass: "display-1 logo", attrs: { href: "/" } },
-                  [_vm._v("Magic Date Ball")]
-                )
-              ])
-            ],
-            1
-          ),
-          _vm._v(" "),
           _c("v-content", [_c("router-view")], 1),
           _vm._v(" "),
           _c("div", { staticClass: "footer caption text-center mt-5 mb-3" }, [
@@ -19621,6 +19624,20 @@ var render = function() {
                   attrs: { cols: "12", sm: "8", md: "4" }
                 },
                 [
+                  _c("div", { staticClass: "mb-5" }, [
+                    _c("div", { staticClass: "mb-3 headline" }, [
+                      _vm._v(
+                        "\n                        Where do you wanna eat? Ask the\n                    "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      { staticClass: "display-3 logo", attrs: { href: "/" } },
+                      [_vm._v("Magic Date Ball")]
+                    )
+                  ]),
+                  _vm._v(" "),
                   _c(
                     "v-avatar",
                     {
@@ -19628,9 +19645,14 @@ var render = function() {
                       attrs: { color: "black", size: "250" }
                     },
                     [
-                      _c("v-icon", { attrs: { dark: "", size: "100" } }, [
-                        _vm._v("mdi-numeric-8-circle")
-                      ])
+                      _c(
+                        "v-icon",
+                        {
+                          attrs: { dark: "", size: "125" },
+                          on: { click: _vm.search }
+                        },
+                        [_vm._v("mdi-numeric-8-circle")]
+                      )
                     ],
                     1
                   )
