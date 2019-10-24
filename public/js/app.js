@@ -1890,11 +1890,85 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'Home',
   data: function data() {
     return {
+      dialog: false,
       loading: false,
+      zip: '',
+      radius: 3,
+      radiusValues: [8000, 16000, 24000, 32000, 40000],
+      radiusLabels: [5, 10, 15, 20, 25],
+      price: 1,
+      priceValues: ['1', '1,2', '1,2,3', '1,2,3,4'],
+      priceLabels: ['$', '$$', '$$$', '$$$$'],
+      keywords: '',
       results: []
     };
   },
@@ -1902,11 +1976,23 @@ __webpack_require__.r(__webpack_exports__);
     search: function search() {
       var _this = this;
 
-      this.loading = true;
-      axios.get('/api/search').then(function (response) {
-        _this.results = response.data;
-        _this.loading = false;
-      });
+      if (this.$refs.form.validate()) {
+        var zip = this.zip;
+        var radius = this.radiusValues[this.radius];
+        var price = this.priceValues[this.price];
+        this.dialog = false;
+        this.loading = true;
+        axios.get('/api/search', {
+          params: {
+            zip: zip,
+            radius: radius,
+            price: price
+          }
+        }).then(function (response) {
+          _this.results = response.data.businesses;
+          _this.loading = false;
+        });
+      }
     }
   }
 });
@@ -19621,6 +19707,7 @@ var render = function() {
                 "v-col",
                 {
                   staticClass: "text-center",
+                  staticStyle: { height: "100%", position: "relative" },
                   attrs: { cols: "12", sm: "8", md: "4" }
                 },
                 [
@@ -19649,9 +19736,258 @@ var render = function() {
                         "v-icon",
                         {
                           attrs: { dark: "", size: "125" },
-                          on: { click: _vm.search }
+                          on: {
+                            click: function($event) {
+                              _vm.dialog = true
+                            }
+                          }
                         },
                         [_vm._v("mdi-numeric-8-circle")]
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-content",
+                    { staticClass: "mt-5 text-left" },
+                    [
+                      _vm.results.length > 0
+                        ? _c(
+                            "v-list",
+                            { attrs: { "three-line": "", light: "" } },
+                            _vm._l(_vm.results, function(result, index) {
+                              return _c(
+                                "v-list-item",
+                                { key: index },
+                                [
+                                  _c(
+                                    "v-list-item-avatar",
+                                    [
+                                      _c("v-img", {
+                                        attrs: { src: result.image_url }
+                                      })
+                                    ],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-list-item-content",
+                                    [
+                                      _c("v-list-item-title", {
+                                        domProps: {
+                                          textContent: _vm._s(result.name)
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-list-item-subtitle",
+                                        [
+                                          _c(
+                                            "v-chip",
+                                            {
+                                              attrs: { dark: "", color: "pink" }
+                                            },
+                                            [_vm._v(_vm._s(result.rating))]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-chip",
+                                            {
+                                              attrs: { dark: "", color: "pink" }
+                                            },
+                                            [_vm._v(_vm._s(result.price))]
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            }),
+                            1
+                          )
+                        : _vm._e()
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-dialog",
+                    {
+                      attrs: { light: "", "max-width": "500px" },
+                      model: {
+                        value: _vm.dialog,
+                        callback: function($$v) {
+                          _vm.dialog = $$v
+                        },
+                        expression: "dialog"
+                      }
+                    },
+                    [
+                      _c(
+                        "v-card",
+                        [
+                          _c(
+                            "v-form",
+                            {
+                              ref: "form",
+                              attrs: { id: "form", "lazy-validation": "" },
+                              on: {
+                                submit: function($event) {
+                                  $event.preventDefault()
+                                  return _vm.search($event)
+                                }
+                              }
+                            },
+                            [
+                              _c("v-card-title", [
+                                _c("span", { staticClass: "headline" }, [
+                                  _vm._v("Just a few more details!")
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "v-card-text",
+                                [
+                                  _c(
+                                    "v-container",
+                                    [
+                                      _c(
+                                        "v-row",
+                                        [
+                                          _c(
+                                            "v-col",
+                                            { attrs: { cols: "12" } },
+                                            [
+                                              _c("v-text-field", {
+                                                attrs: {
+                                                  outlined: "",
+                                                  "prepend-inner-icon":
+                                                    "mdi-map-marker",
+                                                  label: "Zip Code",
+                                                  color: "pink",
+                                                  autocomplete: "off",
+                                                  rules: [
+                                                    function(v) {
+                                                      return (
+                                                        !!v ||
+                                                        "Zip Code is required"
+                                                      )
+                                                    }
+                                                  ],
+                                                  required: ""
+                                                },
+                                                model: {
+                                                  value: _vm.zip,
+                                                  callback: function($$v) {
+                                                    _vm.zip = $$v
+                                                  },
+                                                  expression: "zip"
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-col",
+                                            { attrs: { cols: "12" } },
+                                            [
+                                              _c("v-subheader", [
+                                                _vm._v("Radius (miles)")
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("v-slider", {
+                                                attrs: {
+                                                  color: "pink",
+                                                  "track-color": "purple",
+                                                  min: "0",
+                                                  max: "4",
+                                                  ticks: "always",
+                                                  "tick-labels":
+                                                    _vm.radiusLabels
+                                                },
+                                                model: {
+                                                  value: _vm.radius,
+                                                  callback: function($$v) {
+                                                    _vm.radius = $$v
+                                                  },
+                                                  expression: "radius"
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-col",
+                                            { attrs: { cols: "12" } },
+                                            [
+                                              _c("v-subheader", [
+                                                _vm._v("Price")
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("v-slider", {
+                                                attrs: {
+                                                  color: "pink",
+                                                  "track-color": "purple",
+                                                  min: "0",
+                                                  max: "3",
+                                                  ticks: "always",
+                                                  "tick-labels": _vm.priceLabels
+                                                },
+                                                model: {
+                                                  value: _vm.price,
+                                                  callback: function($$v) {
+                                                    _vm.price = $$v
+                                                  },
+                                                  expression: "price"
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-card-actions",
+                                [
+                                  _c("v-spacer"),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-btn",
+                                    {
+                                      attrs: {
+                                        type: "submit",
+                                        color: "pink",
+                                        text: "",
+                                        "x-large": ""
+                                      }
+                                    },
+                                    [_vm._v("Ready, Set, Date!")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("v-spacer")
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
                       )
                     ],
                     1
