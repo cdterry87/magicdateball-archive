@@ -1,85 +1,95 @@
 <template>
     <div id="home">
         <v-container class="fill-height" fluid>
-            <v-row align="center" justify="center">
-                <v-col cols="12" sm="8" md="4" class="text-center" style="height: 100%; position: relative">
+            <v-layout text-center>
+                <v-flex xs12 sm6 offset-sm3>
                     <div class="mb-5">
-                        <div class="mb-3 headline">
+                        <div class="mb-2 headline">
                             Where do you wanna eat? Ask the
                         </div>
                         <a href="/" class="display-3 logo">Magic Date Ball</a>
                     </div>
 
-                    <v-avatar color="black" size="250" class="elevation-10 text-center">
-                        <v-icon dark size="125" @click="dialog = true">mdi-numeric-8-circle</v-icon>
+                    <v-avatar transition="slide-y-transition" color="black" size="250" class="elevation-10 text-center" v-if="results.length == 0">
+                        <v-icon dark size="125" @click="openDialog">mdi-numeric-8-circle</v-icon>
                     </v-avatar>
 
-                    <v-content class="mt-5 text-left">
-                        <v-list v-if="results.length > 0" three-line light>
-                            <v-list-item v-for="(result, index) in results" :key="index">
-                                <v-list-item-avatar>
-                                    <v-img :src="result.image_url"></v-img>
-                                </v-list-item-avatar>
-                                <v-list-item-content>
-                                    <v-list-item-title v-text="result.name"></v-list-item-title>
-                                    <v-list-item-subtitle>
-                                        <v-chip dark color="pink">{{ result.rating }}</v-chip>
-                                        <v-chip dark color="pink">{{ result.price }}</v-chip>
-                                    </v-list-item-subtitle>
-                                </v-list-item-content>
-                            </v-list-item>
-                        </v-list>
-                    </v-content>
+                    <div v-if="results.length > 0">
+                        <v-card class="mx-auto my-12" max-width="380" light>
+                            <v-img :src="result.image_url" height="250"></v-img>
+                            <v-card-text>
+                                <v-row align="center" class="mx-0 title">
+                                    {{ result.name }}
+                                </v-row>
 
-                    <v-dialog v-model="dialog" light max-width="500px">
-                        <v-card>
-                            <v-form id="form" @submit.prevent="search" ref="form" lazy-validation>
-                                <v-card-title>
-                                    <span class="headline">Just a few more details!</span>
-                                </v-card-title>
-                                <v-card-text>
-                                    <v-container>
-                                        <v-row>
-                                            <v-col cols="12">
-                                                <v-text-field outlined prepend-inner-icon="mdi-map-marker" v-model="zip" label="Zip Code" color="pink" autocomplete="off" :rules="[v => !!v || 'Zip Code is required']" required></v-text-field>
-                                            </v-col>
-                                            <v-col cols="12">
-                                                <v-subheader>Radius (miles)</v-subheader>
-                                                <v-slider
-                                                v-model="radius"
-                                                color="pink"
-                                                track-color="purple"
-                                                min="0"
-                                                max="4"
-                                                ticks="always"
-                                                :tick-labels="radiusLabels"
-                                                ></v-slider>
-                                            </v-col>
-                                            <v-col cols="12">
-                                                <v-subheader>Price</v-subheader>
-                                                <v-slider
-                                                v-model="price"
-                                                color="pink"
-                                                track-color="purple"
-                                                min="0"
-                                                max="3"
-                                                ticks="always"
-                                                :tick-labels="priceLabels"
-                                                ></v-slider>
-                                            </v-col>
-                                        </v-row>
-                                    </v-container>
-                                </v-card-text>
-                                <v-card-actions>
-                                    <v-spacer></v-spacer>
-                                    <v-btn type="submit" color="pink" text x-large>Ready, Set, Date!</v-btn>
-                                    <v-spacer></v-spacer>
-                                </v-card-actions>
-                            </v-form>
+                                <v-row align="center" class="mx-0">
+                                    <v-rating :value="result.rating" color="amber" dense half-increments readonly size="14"></v-rating>
+
+                                    <div class="grey--text ml-4">{{ result.rating }} ({{ result.review_count }})</div>
+                                </v-row>
+
+                                <div class="text-left">
+                                    <v-chip color="purple" dark>{{ result.price }}</v-chip>
+                                    <v-chip color="pink" class="ma-1" dark v-for="(category, index) in result.categories" :key="index">{{ category.title }}</v-chip>
+                                </div>
+                            </v-card-text>
                         </v-card>
-                    </v-dialog>
-                </v-col>
-            </v-row>
+
+                        <div class="mt-5 text-center">
+                            <v-btn color="white" text @click="tryAgain">Try Again?</v-btn>
+                            <v-btn color="white" text @click="clearResults">Clear</v-btn>
+                        </div>
+                    </div>
+                </v-flex>
+            </v-layout>
+
+            <v-dialog v-model="dialog" light max-width="500px">
+                <v-card>
+                    <v-form id="form" @submit.prevent="search" ref="form" lazy-validation>
+                        <v-card-title>
+                            <span class="headline">Just a few more details!</span>
+                        </v-card-title>
+                        <v-card-text>
+                            <v-container>
+                                <v-row>
+                                    <v-col cols="12">
+                                        <v-text-field outlined prepend-inner-icon="mdi-map-marker" v-model="zip" ref="zip" id="zip" label="Zip Code" color="pink" autocomplete="off" :rules="[v => !!v || 'Zip Code is required']" required></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12">
+                                        <v-subheader>Radius (miles)</v-subheader>
+                                        <v-slider
+                                        v-model="radius"
+                                        color="pink"
+                                        track-color="purple"
+                                        min="0"
+                                        max="4"
+                                        ticks="always"
+                                        :tick-labels="radiusLabels"
+                                        ></v-slider>
+                                    </v-col>
+                                    <v-col cols="12">
+                                        <v-subheader>Price</v-subheader>
+                                        <v-slider
+                                        v-model="price"
+                                        color="pink"
+                                        track-color="purple"
+                                        min="0"
+                                        max="3"
+                                        ticks="always"
+                                        :tick-labels="priceLabels"
+                                        ></v-slider>
+                                    </v-col>
+                                </v-row>
+                            </v-container>
+                        </v-card-text>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn type="submit" color="pink" text x-large>Ready, Set, Date!</v-btn>
+                            <v-spacer></v-spacer>
+                        </v-card-actions>
+                    </v-form>
+                </v-card>
+            </v-dialog>
         </v-container>
     </div>
 </template>
@@ -107,18 +117,27 @@
                     '$', '$$', '$$$', '$$$$'
                 ],
                 keywords: '',
+                result: '',
                 results: []
             }
         },
         methods: {
+            openDialog() {
+                this.dialog = true
+                this.$nextTick(() => this.$refs.zip.focus())
+            },
             search() {
                 if (this.$refs.form.validate()) {
+                    this.dialog = false
+                    this.loading = true
+
                     let zip = this.zip
                     let radius = this.radiusValues[this.radius]
                     let price = this.priceValues[this.price]
 
-                    this.dialog = false
-                    this.loading = true
+                    localStorage.setItem('mdbZip', zip)
+                    localStorage.setItem('mdbRadius', this.radius)
+                    localStorage.setItem('mdbPrice', this.price)
 
                     axios.get('/api/search', {
                         params: {
@@ -127,12 +146,53 @@
                     })
                     .then(response => {
                         this.results = response.data.businesses
+                        localStorage.setItem('yelpResults', JSON.stringify(this.results))
+
+                        this.chooseRandom()
 
                         this.loading = false
                     })
                 }
             },
+            chooseRandom() {
+                this.result = this.results[Math.floor(Math.random()*this.results.length)]
+                localStorage.setItem('mdbResult', JSON.stringify(this.result))
+            },
+            clearResults() {
+                this.results = []
+            },
+            tryAgain() {
+                localStorage.removeItem('mdbResult')
 
+                this.chooseRandom()
+            }
+        },
+        mounted() {
+            let yelpResults = localStorage.getItem('yelpResults')
+            let mdbResult = localStorage.getItem('mdbResult')
+            let mdbZip = localStorage.getItem('mdbZip')
+            let mdbRadius = localStorage.getItem('mdbRadius')
+            let mdbPrice = localStorage.getItem('mdbPrice')
+
+            if (yelpResults) {
+                this.results = JSON.parse(yelpResults)
+            }
+
+            if (mdbResult) {
+                this.result = JSON.parse(mdbResult)
+            }
+
+            if (mdbZip) {
+                this.zip = JSON.parse(mdbZip)
+            }
+
+            if (mdbRadius) {
+                this.radius = JSON.parse(mdbRadius)
+            }
+
+            if (mdbPrice) {
+                this.price = JSON.parse(mdbPrice)
+            }
         }
     }
 </script>
