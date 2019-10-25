@@ -16,8 +16,6 @@ git clone https://github.com/cdterry87/MagicDateBall.git
 composer install          # Install dependencies with composer
 cp .env.example .env      # Create your .env file based on the .env.example file and change the appropriate values
 php artisan key:generate  # Generate an application key for your project
-php artisan migrate       # Migrate the database schema
-php artisan db:seed       # Seed the database with sample data
 
 php artisan serve         # Runs the application on a local web server
 ```
