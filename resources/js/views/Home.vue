@@ -160,10 +160,11 @@
             },
             clearResults() {
                 this.results = []
+                localStorage.removeItem('mdbResult')
+                localStorage.removeItem('yelpResults')
             },
             tryAgain() {
                 localStorage.removeItem('mdbResult')
-
                 this.chooseRandom()
             }
         },

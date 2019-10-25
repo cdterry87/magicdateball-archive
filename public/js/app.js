@@ -2026,6 +2026,8 @@ __webpack_require__.r(__webpack_exports__);
     },
     clearResults: function clearResults() {
       this.results = [];
+      localStorage.removeItem('mdbResult');
+      localStorage.removeItem('yelpResults');
     },
     tryAgain: function tryAgain() {
       localStorage.removeItem('mdbResult');
