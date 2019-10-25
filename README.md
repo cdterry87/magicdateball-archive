@@ -17,7 +17,7 @@ composer install          # Install dependencies with composer
 cp .env.example .env      # Create your .env file based on the .env.example file and change the appropriate values
 php artisan key:generate  # Generate an application key for your project
 npm install               # Installs dependencies with npm
-npm run. build            # Builds the javascript part of the application
+npm run build            # Builds the javascript part of the application
 
 php artisan serve         # Runs the application on a local web server
 ```
