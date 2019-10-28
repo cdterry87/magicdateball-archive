@@ -3,7 +3,7 @@ Where do you wanna eat? Ask the Magic Date Ball!
 This is an app I wrote using Laravel, Vue, Guzzle, and the Yelp API to give date night an easy mode when choosing where to eat!
 
 ## Requirements:
-PHP 7.1
+PHP 7.2
 
 ## Installation:
 1. Clone the project to your local PC.
