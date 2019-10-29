@@ -72911,8 +72911,8 @@ component.options.__file = "resources/js/views/Yelp.vue"
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/chaset/www/laravel/magicdateball/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/chaset/www/laravel/magicdateball/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/jason/Projects/MagicDateBall/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/jason/Projects/MagicDateBall/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
