@@ -69,15 +69,15 @@
                                     </v-col>
                                     <v-col cols="12">
                                         <v-subheader>Price</v-subheader>
-                                        <v-slider
-                                        v-model="price"
+                                        <v-range-slider
+                                        v-model="priceRange"
                                         color="pink"
                                         track-color="purple"
+                                        ticks="always"
                                         min="0"
                                         max="3"
-                                        ticks="always"
                                         :tick-labels="priceLabels"
-                                        ></v-slider>
+                                        ></v-range-slider>
                                     </v-col>
                                 </v-row>
                             </v-container>
@@ -109,9 +109,9 @@
                 radiusLabels: [
                     5, 10, 15, 20, 25
                 ],
-                price: 1,
+                priceRange: [1, 2],
                 priceValues: [
-                    '1', '1,2', '1,2,3', '1,2,3,4'
+                    1,2,3,4
                 ],
                 priceLabels: [
                     '$', '$$', '$$$', '$$$$'

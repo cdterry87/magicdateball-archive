@@ -1975,8 +1975,8 @@ __webpack_require__.r(__webpack_exports__);
       radius: 3,
       radiusValues: [8000, 16000, 24000, 32000, 40000],
       radiusLabels: [5, 10, 15, 20, 25],
-      price: 1,
-      priceValues: ['1', '1,2', '1,2,3', '1,2,3,4'],
+      priceRange: [1, 2],
+      priceValues: [1, 2, 3, 4],
       priceLabels: ['$', '$$', '$$$', '$$$$'],
       keywords: '',
       result: '',
@@ -20067,21 +20067,21 @@ var render = function() {
                                     [
                                       _c("v-subheader", [_vm._v("Price")]),
                                       _vm._v(" "),
-                                      _c("v-slider", {
+                                      _c("v-range-slider", {
                                         attrs: {
                                           color: "pink",
                                           "track-color": "purple",
+                                          ticks: "always",
                                           min: "0",
                                           max: "3",
-                                          ticks: "always",
                                           "tick-labels": _vm.priceLabels
                                         },
                                         model: {
-                                          value: _vm.price,
+                                          value: _vm.priceRange,
                                           callback: function($$v) {
-                                            _vm.price = $$v
+                                            _vm.priceRange = $$v
                                           },
-                                          expression: "price"
+                                          expression: "priceRange"
                                         }
                                       })
                                     ],
