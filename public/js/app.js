@@ -1975,7 +1975,7 @@ __webpack_require__.r(__webpack_exports__);
       dialog: false,
       loading: false,
       zip: '',
-      radius: 3,
+      radius: 2,
       radiusValues: [8000, 16000, 24000, 32000, 40000],
       radiusLabels: [5, 10, 15, 20, 25],
       price: 1,
@@ -2028,6 +2028,7 @@ __webpack_require__.r(__webpack_exports__);
       localStorage.setItem('mdbResult', JSON.stringify(this.result));
     },
     clearResults: function clearResults() {
+      this.result = '';
       this.results = [];
       localStorage.removeItem('mdbResult');
       localStorage.removeItem('yelpResults');
@@ -19822,8 +19823,8 @@ var render = function() {
                           _c(
                             "v-card",
                             {
-                              staticClass: "mx-auto my-12",
-                              attrs: { "max-width": "380", light: "" }
+                              staticClass: "mx-auto my-3",
+                              attrs: { "max-width": "450", light: "" }
                             },
                             [
                               _c("v-img", {
@@ -72924,8 +72925,8 @@ component.options.__file = "resources/js/views/Yelp.vue"
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/jason/Projects/MagicDateBall/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/jason/Projects/MagicDateBall/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/chaset/www/laravel/magicdateball/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/chaset/www/laravel/magicdateball/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -15,7 +15,7 @@
                     </v-avatar>
 
                     <div v-if="results.length > 0">
-                        <v-card class="mx-auto my-12" max-width="380" light>
+                        <v-card class="mx-auto my-3" max-width="450" light>
                             <v-img :src="result.image_url" height="250"></v-img>
                             <v-card-text>
                                 <v-row class="mx-0 title">
@@ -105,7 +105,7 @@
                 dialog: false,
                 loading: false,
                 zip: '',
-                radius: 3,
+                radius: 2,
                 radiusValues: [
                     8000, 16000, 24000, 32000, 40000
                 ],
@@ -162,6 +162,7 @@
                 localStorage.setItem('mdbResult', JSON.stringify(this.result))
             },
             clearResults() {
+                this.result = ''
                 this.results = []
                 localStorage.removeItem('mdbResult')
                 localStorage.removeItem('yelpResults')
