@@ -1965,6 +1965,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'Home',
   data: function data() {
@@ -19833,27 +19836,37 @@ var render = function() {
                               _c(
                                 "v-card-text",
                                 [
-                                  _c(
-                                    "v-row",
-                                    {
-                                      staticClass: "mx-0 title",
-                                      attrs: { align: "center" }
-                                    },
-                                    [
-                                      _vm._v(
-                                        "\n                                " +
-                                          _vm._s(_vm.result.name) +
-                                          "\n                            "
-                                      )
-                                    ]
-                                  ),
+                                  _c("v-row", { staticClass: "mx-0 title" }, [
+                                    _vm._v(
+                                      "\n                                " +
+                                        _vm._s(_vm.result.name) +
+                                        "\n                            "
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("v-row", { staticClass: "mx-0" }, [
+                                    _vm._v(
+                                      "\n                                " +
+                                        _vm._s(
+                                          _vm.result.location.display_address[0]
+                                        ) +
+                                        "\n                            "
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("v-row", { staticClass: "mx-0" }, [
+                                    _vm._v(
+                                      "\n                                " +
+                                        _vm._s(
+                                          _vm.result.location.display_address[1]
+                                        ) +
+                                        "\n                            "
+                                    )
+                                  ]),
                                   _vm._v(" "),
                                   _c(
                                     "v-row",
-                                    {
-                                      staticClass: "mx-0",
-                                      attrs: { align: "center" }
-                                    },
+                                    { staticClass: "mx-0" },
                                     [
                                       _c("v-rating", {
                                         attrs: {
