@@ -18,16 +18,19 @@
                         <v-card class="mx-auto my-12" max-width="380" light>
                             <v-img :src="result.image_url" height="250"></v-img>
                             <v-card-text>
-                                <v-row align="center" class="mx-0 title">
+                                <v-row class="mx-0 title">
                                     {{ result.name }}
                                 </v-row>
-
-                                <v-row align="center" class="mx-0">
+                                <v-row class="mx-0">
+                                    {{ result.location.display_address[0] }}
+                                </v-row>
+                                <v-row class="mx-0">
+                                    {{ result.location.display_address[1] }}
+                                </v-row>
+                                <v-row class="mx-0">
                                     <v-rating :value="result.rating" color="amber" dense half-increments readonly size="14"></v-rating>
-
                                     <div class="grey--text ml-4">{{ result.rating }} ({{ result.review_count }})</div>
                                 </v-row>
-
                                 <div class="text-left">
                                     <v-chip color="purple" dark>{{ result.price }}</v-chip>
                                     <v-chip color="pink" class="ma-1" dark v-for="(category, index) in result.categories" :key="index">{{ category.title }}</v-chip>
