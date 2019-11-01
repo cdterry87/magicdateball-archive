@@ -1968,6 +1968,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'Home',
   data: function data() {
@@ -1975,13 +1978,13 @@ __webpack_require__.r(__webpack_exports__);
       dialog: false,
       loading: false,
       zip: '',
+      keyword: '',
       radius: 2,
       radiusValues: [8000, 16000, 24000, 32000, 40000],
       radiusLabels: [5, 10, 15, 20, 25],
       priceRange: [1, 2],
       priceValues: [1, 2, 3, 4],
       priceLabels: ['$', '$$', '$$$', '$$$$'],
-      keywords: '',
       result: '',
       results: []
     };
@@ -2002,7 +2005,8 @@ __webpack_require__.r(__webpack_exports__);
         this.dialog = false;
         this.loading = true;
         var zip = this.zip;
-        var radius = this.radiusValues[this.radius]; // Determine the full range of prices the user selected
+        var radius = this.radiusValues[this.radius];
+        var keyword = this.keyword; // Determine the full range of prices the user selected
         // Then create a string of the corresponding price values to be sent to Yelp
 
         var price = '';
@@ -2024,7 +2028,8 @@ __webpack_require__.r(__webpack_exports__);
           params: {
             zip: zip,
             radius: radius,
-            price: price
+            price: price,
+            keyword: keyword
           }
         }).then(function (response) {
           _this2.results = response.data.businesses;
@@ -20148,6 +20153,34 @@ var render = function() {
                                             _vm.priceRange = $$v
                                           },
                                           expression: "priceRange"
+                                        }
+                                      })
+                                    ],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-col",
+                                    { attrs: { cols: "12" } },
+                                    [
+                                      _c("v-text-field", {
+                                        ref: "keyword",
+                                        attrs: {
+                                          outlined: "",
+                                          "prepend-inner-icon": "mdi-key",
+                                          id: "keyword",
+                                          label: "Keyword (optional)",
+                                          placeholder:
+                                            "(i.e. Japanese, sushi, etc.)",
+                                          color: "pink",
+                                          autocomplete: "off"
+                                        },
+                                        model: {
+                                          value: _vm.keyword,
+                                          callback: function($$v) {
+                                            _vm.keyword = $$v
+                                          },
+                                          expression: "keyword"
                                         }
                                       })
                                     ],

@@ -82,6 +82,9 @@
                                         :tick-labels="priceLabels"
                                         ></v-range-slider>
                                     </v-col>
+                                    <v-col cols="12">
+                                        <v-text-field outlined prepend-inner-icon="mdi-key" v-model="keyword" ref="keyword" id="keyword" label="Keyword (optional)" placeholder="(i.e. Japanese, sushi, etc.)" color="pink" autocomplete="off"></v-text-field>
+                                    </v-col>
                                 </v-row>
                             </v-container>
                         </v-card-text>
@@ -105,6 +108,7 @@
                 dialog: false,
                 loading: false,
                 zip: '',
+                keyword: '',
                 radius: 2,
                 radiusValues: [
                     8000, 16000, 24000, 32000, 40000
@@ -119,7 +123,6 @@
                 priceLabels: [
                     '$', '$$', '$$$', '$$$$'
                 ],
-                keywords: '',
                 result: '',
                 results: []
             }
@@ -136,6 +139,7 @@
 
                     let zip = this.zip
                     let radius = this.radiusValues[this.radius]
+                    let keyword = this.keyword
 
                     // Determine the full range of prices the user selected
                     // Then create a string of the corresponding price values to be sent to Yelp
@@ -156,7 +160,7 @@
 
                     axios.get('/api/search', {
                         params: {
-                            zip, radius, price
+                            zip, radius, price, keyword
                         }
                     })
                     .then(response => {

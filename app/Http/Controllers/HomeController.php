@@ -23,7 +23,7 @@ class HomeController extends Controller
             ],
             'query' => [
                 'limit' => 50,
-                'term' => 'restaurants',
+                'term' => $request->keyword . ' restaurants',
                 'open_now' => true,
                 'location' => $request->zip,
                 'price' => $request->price,
