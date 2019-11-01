@@ -1978,8 +1978,8 @@ __webpack_require__.r(__webpack_exports__);
       radius: 2,
       radiusValues: [8000, 16000, 24000, 32000, 40000],
       radiusLabels: [5, 10, 15, 20, 25],
-      price: 1,
-      priceValues: ['1', '1,2', '1,2,3', '1,2,3,4'],
+      priceRange: [1, 2],
+      priceValues: [1, 2, 3, 4],
       priceLabels: ['$', '$$', '$$$', '$$$$'],
       keywords: '',
       result: '',
@@ -2002,11 +2002,24 @@ __webpack_require__.r(__webpack_exports__);
         this.dialog = false;
         this.loading = true;
         var zip = this.zip;
-        var radius = this.radiusValues[this.radius];
-        var price = this.priceValues[this.price];
+        var radius = this.radiusValues[this.radius]; // Determine the full range of prices the user selected
+        // Then create a string of the corresponding price values to be sent to Yelp
+
+        var price = '';
+        var priceRange = [];
+
+        for (var i = this.priceRange[0]; i <= this.priceRange[1]; i++) {
+          priceRange.push(i);
+        }
+
+        priceRange.forEach(function (value) {
+          price += _this2.priceValues[value] + ',';
+        });
+        price = price.substring(0, price.length - 1); // End price formatting
+
         localStorage.setItem('mdbZip', zip);
         localStorage.setItem('mdbRadius', this.radius);
-        localStorage.setItem('mdbPrice', this.price);
+        localStorage.setItem('mdbPriceRange', JSON.stringify(this.priceRange));
         axios.get('/api/search', {
           params: {
             zip: zip,
@@ -2043,7 +2056,7 @@ __webpack_require__.r(__webpack_exports__);
     var mdbResult = localStorage.getItem('mdbResult');
     var mdbZip = localStorage.getItem('mdbZip');
     var mdbRadius = localStorage.getItem('mdbRadius');
-    var mdbPrice = localStorage.getItem('mdbPrice');
+    var mdbPriceRange = localStorage.getItem('mdbPriceRange');
 
     if (yelpResults) {
       this.results = JSON.parse(yelpResults);
@@ -2061,8 +2074,8 @@ __webpack_require__.r(__webpack_exports__);
       this.radius = JSON.parse(mdbRadius);
     }
 
-    if (mdbPrice) {
-      this.price = JSON.parse(mdbPrice);
+    if (mdbPriceRange) {
+      this.priceRange = JSON.parse(mdbPriceRange);
     }
   }
 });
@@ -19904,13 +19917,18 @@ var render = function() {
                                     "div",
                                     { staticClass: "text-left my-3" },
                                     [
-                                      _c(
-                                        "v-chip",
-                                        {
-                                          attrs: { color: "purple", dark: "" }
-                                        },
-                                        [_vm._v(_vm._s(_vm.result.price))]
-                                      ),
+                                      _vm.result.price
+                                        ? _c(
+                                            "v-chip",
+                                            {
+                                              attrs: {
+                                                color: "purple",
+                                                dark: ""
+                                              }
+                                            },
+                                            [_vm._v(_vm._s(_vm.result.price))]
+                                          )
+                                        : _vm._e(),
                                       _vm._v(" "),
                                       _vm._l(_vm.result.categories, function(
                                         category,
@@ -20115,7 +20133,7 @@ var render = function() {
                                     [
                                       _c("v-subheader", [_vm._v("Price")]),
                                       _vm._v(" "),
-                                      _c("v-slider", {
+                                      _c("v-range-slider", {
                                         attrs: {
                                           color: "pink",
                                           "track-color": "purple",
@@ -20125,11 +20143,11 @@ var render = function() {
                                           "tick-labels": _vm.priceLabels
                                         },
                                         model: {
-                                          value: _vm.price,
+                                          value: _vm.priceRange,
                                           callback: function($$v) {
-                                            _vm.price = $$v
+                                            _vm.priceRange = $$v
                                           },
-                                          expression: "price"
+                                          expression: "priceRange"
                                         }
                                       })
                                     ],

@@ -29,7 +29,7 @@
                                     <span class="grey--text ml-4" style="vertical-align: top;">({{ result.review_count }} Reviews)</span>
                                 </v-row>
                                 <div class="text-left my-3">
-                                    <v-chip color="purple" dark>{{ result.price }}</v-chip>
+                                    <v-chip color="purple" v-if="result.price" dark>{{ result.price }}</v-chip>
                                     <v-chip color="pink" class="ma-1" dark v-for="(category, index) in result.categories" :key="index">{{ category.title }}</v-chip>
                                 </div>
                                 <div class="text-right my-3">
@@ -72,15 +72,15 @@
                                     </v-col>
                                     <v-col cols="12">
                                         <v-subheader>Price</v-subheader>
-                                        <v-slider
-                                        v-model="price"
+                                        <v-range-slider
+                                        v-model="priceRange"
                                         color="pink"
                                         track-color="purple"
                                         min="0"
                                         max="3"
                                         ticks="always"
                                         :tick-labels="priceLabels"
-                                        ></v-slider>
+                                        ></v-range-slider>
                                     </v-col>
                                 </v-row>
                             </v-container>
@@ -112,9 +112,9 @@
                 radiusLabels: [
                     5, 10, 15, 20, 25
                 ],
-                price: 1,
+                priceRange: [1,2],
                 priceValues: [
-                    '1', '1,2', '1,2,3', '1,2,3,4'
+                    1, 2, 3, 4
                 ],
                 priceLabels: [
                     '$', '$$', '$$$', '$$$$'
@@ -136,11 +136,23 @@
 
                     let zip = this.zip
                     let radius = this.radiusValues[this.radius]
-                    let price = this.priceValues[this.price]
+
+                    // Determine the full range of prices the user selected
+                    // Then create a string of the corresponding price values to be sent to Yelp
+                    let price = ''
+                    let priceRange = []
+                    for (var i = this.priceRange[0]; i <= this.priceRange[1]; i++) {
+                        priceRange.push(i);
+                    }
+                    priceRange.forEach(value => {
+                        price += this.priceValues[value] + ','
+                    })
+                    price = price.substring(0, price.length - 1)
+                    // End price formatting
 
                     localStorage.setItem('mdbZip', zip)
                     localStorage.setItem('mdbRadius', this.radius)
-                    localStorage.setItem('mdbPrice', this.price)
+                    localStorage.setItem('mdbPriceRange', JSON.stringify(this.priceRange))
 
                     axios.get('/api/search', {
                         params: {
@@ -177,7 +189,7 @@
             let mdbResult = localStorage.getItem('mdbResult')
             let mdbZip = localStorage.getItem('mdbZip')
             let mdbRadius = localStorage.getItem('mdbRadius')
-            let mdbPrice = localStorage.getItem('mdbPrice')
+            let mdbPriceRange = localStorage.getItem('mdbPriceRange')
 
             if (yelpResults) {
                 this.results = JSON.parse(yelpResults)
@@ -195,8 +207,8 @@
                 this.radius = JSON.parse(mdbRadius)
             }
 
-            if (mdbPrice) {
-                this.price = JSON.parse(mdbPrice)
+            if (mdbPriceRange) {
+                this.priceRange = JSON.parse(mdbPriceRange)
             }
         }
     }
