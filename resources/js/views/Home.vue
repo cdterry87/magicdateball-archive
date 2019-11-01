@@ -22,7 +22,9 @@
                                     {{ result.name }}
                                 </v-row>
                                 <v-row class="mx-0">
-                                    {{ result.location.display_address[0] }}, {{ result.location.display_address[1] }}
+                                    <span class="mr-2" v-for="(address, addressIndex) in result.location.display_address" :key="addressIndex">
+                                        {{ address }}
+                                    </span>
                                 </v-row>
                                 <v-row class="mx-0 my-3" v-if="result.rating >= 0 && result.rating <= 5">
                                     <img :src="'images/yelp/ratings/' + result.rating + '.png'">

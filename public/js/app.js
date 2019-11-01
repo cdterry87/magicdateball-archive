@@ -1971,6 +1971,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'Home',
   data: function data() {
@@ -19867,19 +19869,30 @@ var render = function() {
                                     ]
                                   ),
                                   _vm._v(" "),
-                                  _c("v-row", { staticClass: "mx-0" }, [
-                                    _vm._v(
-                                      "\n                                " +
-                                        _vm._s(
-                                          _vm.result.location.display_address[0]
-                                        ) +
-                                        ", " +
-                                        _vm._s(
-                                          _vm.result.location.display_address[1]
-                                        ) +
-                                        "\n                            "
-                                    )
-                                  ]),
+                                  _c(
+                                    "v-row",
+                                    { staticClass: "mx-0" },
+                                    _vm._l(
+                                      _vm.result.location.display_address,
+                                      function(address, addressIndex) {
+                                        return _c(
+                                          "span",
+                                          {
+                                            key: addressIndex,
+                                            staticClass: "mr-2"
+                                          },
+                                          [
+                                            _vm._v(
+                                              "\n                                    " +
+                                                _vm._s(address) +
+                                                "\n                                "
+                                            )
+                                          ]
+                                        )
+                                      }
+                                    ),
+                                    0
+                                  ),
                                   _vm._v(" "),
                                   _vm.result.rating >= 0 &&
                                   _vm.result.rating <= 5
