@@ -24,15 +24,15 @@
                                 <v-row class="mx-0">
                                     {{ result.location.display_address[0] }}, {{ result.location.display_address[1] }}
                                 </v-row>
-                                <v-row class="mx-0 my-2" v-if="result.rating >= 0 && result.rating <= 5">
+                                <v-row class="mx-0 my-3" v-if="result.rating >= 0 && result.rating <= 5">
                                     <img :src="'images/yelp/ratings/' + result.rating + '.png'">
                                     <span class="grey--text ml-4" style="vertical-align: top;">({{ result.review_count }} Reviews)</span>
                                 </v-row>
-                                <div class="text-left">
+                                <div class="text-left my-3">
                                     <v-chip color="purple" dark>{{ result.price }}</v-chip>
                                     <v-chip color="pink" class="ma-1" dark v-for="(category, index) in result.categories" :key="index">{{ category.title }}</v-chip>
                                 </div>
-                                <div class="text-right">
+                                <div class="text-right my-3">
                                     <a :href="result.url" class="black--text font-weight-bold" target="_blank">View on <img src="images/yelp/logo.png" height="32" style="vertical-align: bottom;"></a>
                                 </div>
                             </v-card-text>

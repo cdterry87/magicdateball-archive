@@ -19867,7 +19867,7 @@ var render = function() {
                                   _vm.result.rating <= 5
                                     ? _c(
                                         "v-row",
-                                        { staticClass: "mx-0 my-2" },
+                                        { staticClass: "mx-0 my-3" },
                                         [
                                           _c("img", {
                                             attrs: {
@@ -19902,7 +19902,7 @@ var render = function() {
                                   _vm._v(" "),
                                   _c(
                                     "div",
-                                    { staticClass: "text-left" },
+                                    { staticClass: "text-left my-3" },
                                     [
                                       _c(
                                         "v-chip",
@@ -19930,31 +19930,35 @@ var render = function() {
                                     2
                                   ),
                                   _vm._v(" "),
-                                  _c("div", { staticClass: "text-right" }, [
-                                    _c(
-                                      "a",
-                                      {
-                                        staticClass:
-                                          "black--text font-weight-bold",
-                                        attrs: {
-                                          href: _vm.result.url,
-                                          target: "_blank"
-                                        }
-                                      },
-                                      [
-                                        _vm._v("View on "),
-                                        _c("img", {
-                                          staticStyle: {
-                                            "vertical-align": "bottom"
-                                          },
+                                  _c(
+                                    "div",
+                                    { staticClass: "text-right my-3" },
+                                    [
+                                      _c(
+                                        "a",
+                                        {
+                                          staticClass:
+                                            "black--text font-weight-bold",
                                           attrs: {
-                                            src: "images/yelp/logo.png",
-                                            height: "32"
+                                            href: _vm.result.url,
+                                            target: "_blank"
                                           }
-                                        })
-                                      ]
-                                    )
-                                  ])
+                                        },
+                                        [
+                                          _vm._v("View on "),
+                                          _c("img", {
+                                            staticStyle: {
+                                              "vertical-align": "bottom"
+                                            },
+                                            attrs: {
+                                              src: "images/yelp/logo.png",
+                                              height: "32"
+                                            }
+                                          })
+                                        ]
+                                      )
+                                    ]
+                                  )
                                 ],
                                 1
                               )
