@@ -24,8 +24,9 @@
                                 <v-row class="mx-0">
                                     {{ result.location.display_address[0] }}, {{ result.location.display_address[1] }}
                                 </v-row>
-                                <v-row class="mx-0 my-2">
-                                    <Rating :rating="result.rating" :review_count="result.review_count" />
+                                <v-row class="mx-0 my-2" v-if="result.rating >= 0 && result.rating <= 5">
+                                    <img :src="'images/yelp/ratings/' + result.rating + '.png'">
+                                    <span class="grey--text ml-4" style="vertical-align: top;">({{ result.review_count }} Reviews)</span>
                                 </v-row>
                                 <div class="text-left">
                                     <v-chip color="purple" dark>{{ result.price }}</v-chip>
@@ -94,13 +95,8 @@
 </template>
 
 <script>
-    import Rating from './../components/Rating'
-
     export default {
         name: 'Home',
-        components: {
-            Rating
-        },
         data() {
             return {
                 dialog: false,
