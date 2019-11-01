@@ -10,8 +10,8 @@
                         <a href="/" class="display-3 logo">Magic Date Ball</a>
                     </div>
 
-                    <v-avatar transition="slide-y-transition" color="black" size="250" class="elevation-10 text-center" v-if="results.length == 0">
-                        <v-icon dark size="125" @click="openDialog">mdi-numeric-8-circle</v-icon>
+                    <v-avatar transition="slide-y-transition" color="black" size="300" class="elevation-10 text-center" v-if="results.length == 0">
+                        <v-icon dark size="150" @click="openDialog">mdi-numeric-8-circle</v-icon>
                     </v-avatar>
 
                     <div v-if="results.length > 0">
@@ -22,14 +22,10 @@
                                     {{ result.name }}
                                 </v-row>
                                 <v-row class="mx-0">
-                                    {{ result.location.display_address[0] }}
+                                    {{ result.location.display_address[0] }}, {{ result.location.display_address[1] }}
                                 </v-row>
-                                <v-row class="mx-0">
-                                    {{ result.location.display_address[1] }}
-                                </v-row>
-                                <v-row class="mx-0">
-                                    <v-rating :value="result.rating" color="amber" dense half-increments readonly size="14"></v-rating>
-                                    <div class="grey--text ml-4">{{ result.rating }} ({{ result.review_count }})</div>
+                                <v-row class="mx-0 my-2">
+                                    <Rating :rating="result.rating" :review_count="result.review_count" />
                                 </v-row>
                                 <div class="text-left">
                                     <v-chip color="purple" dark>{{ result.price }}</v-chip>
@@ -98,8 +94,13 @@
 </template>
 
 <script>
+    import Rating from './../components/Rating'
+
     export default {
         name: 'Home',
+        components: {
+            Rating
+        },
         data() {
             return {
                 dialog: false,
