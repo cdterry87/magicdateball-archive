@@ -1965,6 +1965,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'Home',
   data: function data() {
@@ -19834,13 +19837,17 @@ var render = function() {
                               _c(
                                 "v-card-text",
                                 [
-                                  _c("v-row", { staticClass: "mx-0 title" }, [
-                                    _vm._v(
-                                      "\n                                " +
-                                        _vm._s(_vm.result.name) +
-                                        "\n                            "
-                                    )
-                                  ]),
+                                  _c(
+                                    "v-row",
+                                    { staticClass: "mx-0 headline" },
+                                    [
+                                      _vm._v(
+                                        "\n                                " +
+                                          _vm._s(_vm.result.name) +
+                                          "\n                            "
+                                      )
+                                    ]
+                                  ),
                                   _vm._v(" "),
                                   _c("v-row", { staticClass: "mx-0" }, [
                                     _vm._v(
@@ -19921,7 +19928,33 @@ var render = function() {
                                       })
                                     ],
                                     2
-                                  )
+                                  ),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "text-right" }, [
+                                    _c(
+                                      "a",
+                                      {
+                                        staticClass:
+                                          "black--text font-weight-bold",
+                                        attrs: {
+                                          href: _vm.result.url,
+                                          target: "_blank"
+                                        }
+                                      },
+                                      [
+                                        _vm._v("View on "),
+                                        _c("img", {
+                                          staticStyle: {
+                                            "vertical-align": "bottom"
+                                          },
+                                          attrs: {
+                                            src: "images/yelp/logo.png",
+                                            height: "32"
+                                          }
+                                        })
+                                      ]
+                                    )
+                                  ])
                                 ],
                                 1
                               )

@@ -18,7 +18,7 @@
                         <v-card class="mx-auto my-3" max-width="450" light>
                             <v-img :src="result.image_url" height="250"></v-img>
                             <v-card-text>
-                                <v-row class="mx-0 title">
+                                <v-row class="mx-0 headline">
                                     {{ result.name }}
                                 </v-row>
                                 <v-row class="mx-0">
@@ -31,6 +31,9 @@
                                 <div class="text-left">
                                     <v-chip color="purple" dark>{{ result.price }}</v-chip>
                                     <v-chip color="pink" class="ma-1" dark v-for="(category, index) in result.categories" :key="index">{{ category.title }}</v-chip>
+                                </div>
+                                <div class="text-right">
+                                    <a :href="result.url" class="black--text font-weight-bold" target="_blank">View on <img src="images/yelp/logo.png" height="32" style="vertical-align: bottom;"></a>
                                 </div>
                             </v-card-text>
                         </v-card>
