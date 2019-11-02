@@ -37,7 +37,7 @@
                                         <v-chip color="purple" v-if="result.price" dark>{{ result.price }}</v-chip>
                                         <v-chip color="pink" class="ma-1" dark v-for="(category, index) in result.categories" :key="index">{{ category.title }}</v-chip>
                                     </div>
-                                    <div class="text-right my-4">
+                                    <div class="text-right my-5">
                                         <a :href="result.url" target="_blank" class="black--text font-weight-bold">View on <img src="images/yelp/logo.png" height="32" style="vertical-align: bottom;"></a>
                                     </div>
                                 </v-card-text>
