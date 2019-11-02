@@ -1977,6 +1977,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'Home',
   data: function data() {
@@ -1987,7 +1995,10 @@ __webpack_require__.r(__webpack_exports__);
       searchComplete: false,
       tryingAgain: false,
       triedAgain: false,
-      zip: '',
+      geolocation: false,
+      location: '',
+      latitude: '',
+      longitude: '',
       keyword: '',
       radius: 2,
       radiusValues: [8000, 16000, 24000, 32000, 40000],
@@ -2001,21 +2012,18 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     openDialog: function openDialog() {
-      var _this = this;
-
       this.dialog = true;
-      this.$nextTick(function () {
-        return _this.$refs.zip.focus();
-      });
     },
     search: function search() {
-      var _this2 = this;
+      var _this = this;
 
-      if (this.$refs.form.validate()) {
+      if (this.geolocation || this.$refs.form.validate()) {
         this.isSearching = true;
         this.dialog = false;
         this.loading = true;
-        var zip = this.zip;
+        var location = this.location;
+        var latitude = this.latitude;
+        var longitude = this.longitude;
         var radius = this.radiusValues[this.radius];
         var keyword = this.keyword; // Determine the full range of prices the user selected
         // Then create a string of the corresponding price values to be sent to Yelp
@@ -2028,31 +2036,33 @@ __webpack_require__.r(__webpack_exports__);
         }
 
         priceRange.forEach(function (value) {
-          price += _this2.priceValues[value] + ',';
+          price += _this.priceValues[value] + ',';
         });
         price = price.substring(0, price.length - 1); // End price formatting
 
-        localStorage.setItem('mdbZip', zip);
+        localStorage.setItem('mdbLocation', location);
         localStorage.setItem('mdbRadius', this.radius);
         localStorage.setItem('mdbPriceRange', JSON.stringify(this.priceRange));
         axios.get('/api/search', {
           params: {
-            zip: zip,
+            location: location,
+            latitude: latitude,
+            longitude: longitude,
             radius: radius,
             price: price,
             keyword: keyword
           }
         }).then(function (response) {
-          _this2.results = response.data.businesses;
-          localStorage.setItem('yelpResults', JSON.stringify(_this2.results));
+          _this.results = response.data.businesses;
+          localStorage.setItem('yelpResults', JSON.stringify(_this.results));
 
-          _this2.chooseRandom();
+          _this.chooseRandom();
 
-          _this2.loading = false;
+          _this.loading = false;
           setTimeout(function () {
             this.isSearching = false;
             this.searchComplete = true;
-          }.bind(_this2), 999);
+          }.bind(_this), 999);
         });
       }
     },
@@ -2079,12 +2089,36 @@ __webpack_require__.r(__webpack_exports__);
         this.tryingAgain = false;
         this.triedAgain = true;
       }.bind(this), 999);
+    },
+    enableGeolocation: function enableGeolocation() {
+      this.geolocation = false;
+      var vm = this;
+
+      function success(position) {
+        vm.geolocation = true;
+        vm.latitude = position.coords.latitude;
+        vm.longitude = position.coords.longitude;
+      }
+
+      function error() {
+        vm.geolocation = false;
+      }
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(success, error);
+      }
+    },
+    disableGeolocation: function disableGeolocation() {
+      this.geolocation = false;
+      this.latitude = '';
+      this.longitude = '';
     }
   },
   mounted: function mounted() {
+    this.enableGeolocation();
     var yelpResults = localStorage.getItem('yelpResults');
     var mdbResult = localStorage.getItem('mdbResult');
-    var mdbZip = localStorage.getItem('mdbZip');
+    var mdbLocation = localStorage.getItem('mdbLocation');
     var mdbRadius = localStorage.getItem('mdbRadius');
     var mdbPriceRange = localStorage.getItem('mdbPriceRange');
 
@@ -2097,8 +2131,8 @@ __webpack_require__.r(__webpack_exports__);
       this.searchComplete = true;
     }
 
-    if (mdbZip) {
-      this.zip = JSON.parse(mdbZip);
+    if (mdbLocation) {
+      this.location = mdbLocation;
     }
 
     if (mdbRadius) {
@@ -20124,6 +20158,7 @@ var render = function() {
                       _vm._v(" "),
                       _c(
                         "v-card-text",
+                        { staticClass: "pb-0" },
                         [
                           _c(
                             "v-container",
@@ -20131,40 +20166,74 @@ var render = function() {
                               _c(
                                 "v-row",
                                 [
-                                  _c(
-                                    "v-col",
-                                    { attrs: { cols: "12" } },
-                                    [
-                                      _c("v-text-field", {
-                                        ref: "zip",
-                                        attrs: {
-                                          outlined: "",
-                                          "prepend-inner-icon":
-                                            "mdi-map-marker",
-                                          id: "zip",
-                                          label: "Zip Code",
-                                          color: "pink",
-                                          autocomplete: "off",
-                                          rules: [
-                                            function(v) {
-                                              return (
-                                                !!v || "Zip Code is required"
-                                              )
-                                            }
+                                  _c("v-col", { attrs: { cols: "12" } }, [
+                                    !_vm.geolocation
+                                      ? _c(
+                                          "div",
+                                          [
+                                            _c("v-text-field", {
+                                              ref: "location",
+                                              attrs: {
+                                                "hide-details": "",
+                                                outlined: "",
+                                                "prepend-inner-icon":
+                                                  "mdi-map-marker",
+                                                id: "location",
+                                                label:
+                                                  "Location (City/State/Zip)",
+                                                color: "pink",
+                                                autocomplete: "off",
+                                                rules: [
+                                                  function(v) {
+                                                    return (
+                                                      !!v ||
+                                                      "City/State/Zip is required"
+                                                    )
+                                                  }
+                                                ],
+                                                required: ""
+                                              },
+                                              model: {
+                                                value: _vm.location,
+                                                callback: function($$v) {
+                                                  _vm.location = $$v
+                                                },
+                                                expression: "location"
+                                              }
+                                            })
                                           ],
-                                          required: ""
-                                        },
-                                        model: {
-                                          value: _vm.zip,
-                                          callback: function($$v) {
-                                            _vm.zip = $$v
+                                          1
+                                        )
+                                      : _c(
+                                          "div",
+                                          {
+                                            staticClass: "caption text-center"
                                           },
-                                          expression: "zip"
-                                        }
-                                      })
-                                    ],
-                                    1
-                                  ),
+                                          [
+                                            _vm._v(
+                                              "\n                                        Magic Date Ball is using your location to find nearby results!\n                                        "
+                                            ),
+                                            _c("div", [
+                                              _c(
+                                                "a",
+                                                {
+                                                  staticClass:
+                                                    "font-weight-bold",
+                                                  on: {
+                                                    click:
+                                                      _vm.disableGeolocation
+                                                  }
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "Click here to manually set your location."
+                                                  )
+                                                ]
+                                              )
+                                            ])
+                                          ]
+                                        )
+                                  ]),
                                   _vm._v(" "),
                                   _c(
                                     "v-col",
@@ -20229,6 +20298,7 @@ var render = function() {
                                       _c("v-text-field", {
                                         ref: "keyword",
                                         attrs: {
+                                          "hide-details": "",
                                           outlined: "",
                                           "prepend-inner-icon": "mdi-key",
                                           id: "keyword",

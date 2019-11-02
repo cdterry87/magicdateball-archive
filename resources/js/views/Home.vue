@@ -58,11 +58,19 @@
                         <v-card-title>
                             <span class="headline">Just a few more details!</span>
                         </v-card-title>
-                        <v-card-text>
+                        <v-card-text class="pb-0">
                             <v-container>
                                 <v-row>
                                     <v-col cols="12">
-                                        <v-text-field outlined prepend-inner-icon="mdi-map-marker" v-model="zip" ref="zip" id="zip" label="Zip Code" color="pink" autocomplete="off" :rules="[v => !!v || 'Zip Code is required']" required></v-text-field>
+                                        <div v-if="!geolocation">
+                                            <v-text-field hide-details outlined prepend-inner-icon="mdi-map-marker" v-model="location" ref="location" id="location" label="Location (City/State/Zip)" color="pink" autocomplete="off" :rules="[v => !!v || 'City/State/Zip is required']" required></v-text-field>
+                                        </div>
+                                        <div v-else class="caption text-center">
+                                            Magic Date Ball is using your location to find nearby results!
+                                            <div>
+                                                <a class="font-weight-bold" @click="disableGeolocation">Click here to manually set your location.</a>
+                                            </div>
+                                        </div>
                                     </v-col>
                                     <v-col cols="12">
                                         <v-subheader>Radius (miles)</v-subheader>
@@ -89,7 +97,7 @@
                                         ></v-range-slider>
                                     </v-col>
                                     <v-col cols="12">
-                                        <v-text-field outlined prepend-inner-icon="mdi-key" v-model="keyword" ref="keyword" id="keyword" label="Keyword (optional)" placeholder="(i.e. Japanese, sushi, etc.)" color="pink" autocomplete="off"></v-text-field>
+                                        <v-text-field hide-details outlined prepend-inner-icon="mdi-key" v-model="keyword" ref="keyword" id="keyword" label="Keyword (optional)" placeholder="(i.e. Japanese, sushi, etc.)" color="pink" autocomplete="off"></v-text-field>
                                     </v-col>
                                 </v-row>
                             </v-container>
@@ -117,7 +125,10 @@
                 searchComplete: false,
                 tryingAgain: false,
                 triedAgain: false,
-                zip: '',
+                geolocation: false,
+                location: '',
+                latitude: '',
+                longitude: '',
                 keyword: '',
                 radius: 2,
                 radiusValues: [
@@ -140,15 +151,16 @@
         methods: {
             openDialog() {
                 this.dialog = true
-                this.$nextTick(() => this.$refs.zip.focus())
             },
             search() {
-                if (this.$refs.form.validate()) {
+                if (this.geolocation || this.$refs.form.validate()) {
                     this.isSearching = true
                     this.dialog = false
                     this.loading = true
 
-                    let zip = this.zip
+                    let location = this.location
+                    let latitude = this.latitude
+                    let longitude = this.longitude
                     let radius = this.radiusValues[this.radius]
                     let keyword = this.keyword
 
@@ -165,13 +177,13 @@
                     price = price.substring(0, price.length - 1)
                     // End price formatting
 
-                    localStorage.setItem('mdbZip', zip)
+                    localStorage.setItem('mdbLocation', location)
                     localStorage.setItem('mdbRadius', this.radius)
                     localStorage.setItem('mdbPriceRange', JSON.stringify(this.priceRange))
 
                     axios.get('/api/search', {
                         params: {
-                            zip, radius, price, keyword
+                            location, latitude, longitude, radius, price, keyword
                         }
                     })
                     .then(response => {
@@ -212,12 +224,37 @@
                     this.tryingAgain = false
                     this.triedAgain = true
                 }.bind(this), 999)
+            },
+            enableGeolocation() {
+                this.geolocation = false
+                let vm = this
+
+                function success(position) {
+                    vm.geolocation = true
+                    vm.latitude  = position.coords.latitude;
+                    vm.longitude = position.coords.longitude;
+                }
+
+                function error() {
+                    vm.geolocation = false
+                }
+
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(success, error);
+                }
+            },
+            disableGeolocation() {
+                this.geolocation = false
+                this.latitude = ''
+                this.longitude = ''
             }
         },
         mounted() {
+            this.enableGeolocation()
+
             let yelpResults = localStorage.getItem('yelpResults')
             let mdbResult = localStorage.getItem('mdbResult')
-            let mdbZip = localStorage.getItem('mdbZip')
+            let mdbLocation = localStorage.getItem('mdbLocation')
             let mdbRadius = localStorage.getItem('mdbRadius')
             let mdbPriceRange = localStorage.getItem('mdbPriceRange')
 
@@ -230,8 +267,8 @@
                 this.searchComplete = true
             }
 
-            if (mdbZip) {
-                this.zip = JSON.parse(mdbZip)
+            if (mdbLocation) {
+                this.location = mdbLocation
             }
 
             if (mdbRadius) {
