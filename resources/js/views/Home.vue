@@ -10,39 +10,43 @@
                         <a href="/" class="display-3 logo">Magic Date Ball</a>
                     </div>
 
-                    <v-avatar transition="slide-y-transition" color="black" size="300" class="elevation-10 text-center" v-if="results.length == 0">
-                        <v-icon dark size="150" @click="openDialog">mdi-numeric-8-circle</v-icon>
-                    </v-avatar>
+                    <div v-if="results.length == 0 || isSearching">
+                        <v-avatar class="animated elevation-10 text-center" :class="{bounceInDown: (!isSearching && !searchComplete), wobble: isSearching, fadeOut: searchComplete}" color="black" size="300">
+                            <v-icon dark size="150" @click="openDialog">mdi-numeric-8-circle</v-icon>
+                        </v-avatar>
+                    </div>
 
                     <div v-if="results.length > 0">
-                        <v-card class="mx-auto my-3" max-width="450" light>
-                            <v-img :src="result.image_url" height="250"></v-img>
-                            <v-card-text>
-                                <v-row class="mx-0 headline">
-                                    {{ result.name }}
-                                </v-row>
-                                <v-row class="mx-0">
-                                    <span class="mr-2" v-for="(address, addressIndex) in result.location.display_address" :key="addressIndex">
-                                        {{ address }}
-                                    </span>
-                                </v-row>
-                                <v-row class="mx-0 my-3" v-if="result.rating >= 0 && result.rating <= 5">
-                                    <img :src="'images/yelp/ratings/' + result.rating + '.png'">
-                                    <span class="grey--text ml-4" style="vertical-align: top;">({{ result.review_count }} Reviews)</span>
-                                </v-row>
-                                <div class="text-left my-3">
-                                    <v-chip color="purple" v-if="result.price" dark>{{ result.price }}</v-chip>
-                                    <v-chip color="pink" class="ma-1" dark v-for="(category, index) in result.categories" :key="index">{{ category.title }}</v-chip>
-                                </div>
-                                <div class="text-right my-3">
-                                    <a :href="result.url" class="black--text font-weight-bold" target="_blank">View on <img src="images/yelp/logo.png" height="32" style="vertical-align: bottom;"></a>
-                                </div>
-                            </v-card-text>
-                        </v-card>
+                        <div v-if="searchComplete" class="animated" :class="{zoomIn: searchComplete}">
+                            <v-card class="mx-auto my-3" max-width="450" light>
+                                <v-img :src="result.image_url" height="250"></v-img>
+                                <v-card-text>
+                                    <v-row class="mx-0 headline">
+                                        {{ result.name }}
+                                    </v-row>
+                                    <v-row class="mx-0" v-if="result.location">
+                                        <span class="mr-2" v-for="(address, addressIndex) in result.location.display_address" :key="addressIndex">
+                                            {{ address }}
+                                        </span>
+                                    </v-row>
+                                    <v-row class="mx-0 my-3" v-if="result.rating >= 0 && result.rating <= 5">
+                                        <img :src="'images/yelp/ratings/' + result.rating + '.png'">
+                                        <span class="grey--text ml-4" style="vertical-align: top;">({{ result.review_count }} Reviews)</span>
+                                    </v-row>
+                                    <div class="text-left my-3">
+                                        <v-chip color="purple" v-if="result.price" dark>{{ result.price }}</v-chip>
+                                        <v-chip color="pink" class="ma-1" dark v-for="(category, index) in result.categories" :key="index">{{ category.title }}</v-chip>
+                                    </div>
+                                    <div class="text-right my-4">
+                                        <a :href="result.url" target="_blank" class="black--text font-weight-bold">View on <img src="images/yelp/logo.png" height="32" style="vertical-align: bottom;"></a>
+                                    </div>
+                                </v-card-text>
+                            </v-card>
 
-                        <div class="mt-5 text-center">
-                            <v-btn color="white" text @click="tryAgain">Try Again?</v-btn>
-                            <v-btn color="white" text @click="clearResults">Clear</v-btn>
+                            <div class="mt-5 text-center">
+                                <v-btn color="white" text @click="tryAgain">Try Again?</v-btn>
+                                <v-btn color="white" text @click="clearResults">Clear</v-btn>
+                            </div>
                         </div>
                     </div>
                 </v-flex>
@@ -109,6 +113,8 @@
             return {
                 dialog: false,
                 loading: false,
+                isSearching: false,
+                searchComplete: false,
                 zip: '',
                 keyword: '',
                 radius: 2,
@@ -136,6 +142,7 @@
             },
             search() {
                 if (this.$refs.form.validate()) {
+                    this.isSearching = true
                     this.dialog = false
                     this.loading = true
 
@@ -172,6 +179,10 @@
                         this.chooseRandom()
 
                         this.loading = false
+                        setTimeout(function() {
+                            this.isSearching = false
+                            this.searchComplete = true
+                        }.bind(this), 999)
                     })
                 }
             },
@@ -182,6 +193,8 @@
             clearResults() {
                 this.result = ''
                 this.results = []
+                this.searchComplete = false
+                this.isSearching = false
                 localStorage.removeItem('mdbResult')
                 localStorage.removeItem('yelpResults')
             },
@@ -203,6 +216,7 @@
 
             if (mdbResult) {
                 this.result = JSON.parse(mdbResult)
+                this.searchComplete = true
             }
 
             if (mdbZip) {

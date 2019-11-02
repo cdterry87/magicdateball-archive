@@ -1973,12 +1973,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'Home',
   data: function data() {
     return {
       dialog: false,
       loading: false,
+      isSearching: false,
+      searchComplete: false,
       zip: '',
       keyword: '',
       radius: 2,
@@ -2004,6 +2010,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       if (this.$refs.form.validate()) {
+        this.isSearching = true;
         this.dialog = false;
         this.loading = true;
         var zip = this.zip;
@@ -2040,6 +2047,10 @@ __webpack_require__.r(__webpack_exports__);
           _this2.chooseRandom();
 
           _this2.loading = false;
+          setTimeout(function () {
+            this.isSearching = false;
+            this.searchComplete = true;
+          }.bind(_this2), 999);
         });
       }
     },
@@ -2050,6 +2061,8 @@ __webpack_require__.r(__webpack_exports__);
     clearResults: function clearResults() {
       this.result = '';
       this.results = [];
+      this.searchComplete = false;
+      this.isSearching = false;
       localStorage.removeItem('mdbResult');
       localStorage.removeItem('yelpResults');
     },
@@ -2071,6 +2084,7 @@ __webpack_require__.r(__webpack_exports__);
 
     if (mdbResult) {
       this.result = JSON.parse(mdbResult);
+      this.searchComplete = true;
     }
 
     if (mdbZip) {
@@ -19793,246 +19807,268 @@ var render = function() {
             "v-layout",
             { attrs: { "text-center": "" } },
             [
-              _c(
-                "v-flex",
-                { attrs: { xs12: "", sm6: "", "offset-sm3": "" } },
-                [
-                  _c("div", { staticClass: "mb-5" }, [
-                    _c("div", { staticClass: "mb-2 headline" }, [
-                      _vm._v(
-                        "\n                        Where do you wanna eat? Ask the\n                    "
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "a",
-                      { staticClass: "display-3 logo", attrs: { href: "/" } },
-                      [_vm._v("Magic Date Ball")]
+              _c("v-flex", { attrs: { xs12: "", sm6: "", "offset-sm3": "" } }, [
+                _c("div", { staticClass: "mb-5" }, [
+                  _c("div", { staticClass: "mb-2 headline" }, [
+                    _vm._v(
+                      "\n                        Where do you wanna eat? Ask the\n                    "
                     )
                   ]),
                   _vm._v(" "),
-                  _vm.results.length == 0
-                    ? _c(
-                        "v-avatar",
-                        {
-                          staticClass: "elevation-10 text-center",
-                          attrs: {
-                            transition: "slide-y-transition",
-                            color: "black",
-                            size: "300"
-                          }
-                        },
-                        [
-                          _c(
-                            "v-icon",
-                            {
-                              attrs: { dark: "", size: "150" },
-                              on: { click: _vm.openDialog }
+                  _c(
+                    "a",
+                    { staticClass: "display-3 logo", attrs: { href: "/" } },
+                    [_vm._v("Magic Date Ball")]
+                  )
+                ]),
+                _vm._v(" "),
+                _vm.results.length == 0 || _vm.isSearching
+                  ? _c(
+                      "div",
+                      [
+                        _c(
+                          "v-avatar",
+                          {
+                            staticClass: "animated elevation-10 text-center",
+                            class: {
+                              bounceInDown:
+                                !_vm.isSearching && !_vm.searchComplete,
+                              wobble: _vm.isSearching,
+                              fadeOut: _vm.searchComplete
                             },
-                            [_vm._v("mdi-numeric-8-circle")]
-                          )
-                        ],
-                        1
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.results.length > 0
-                    ? _c(
-                        "div",
-                        [
-                          _c(
-                            "v-card",
+                            attrs: { color: "black", size: "300" }
+                          },
+                          [
+                            _c(
+                              "v-icon",
+                              {
+                                attrs: { dark: "", size: "150" },
+                                on: { click: _vm.openDialog }
+                              },
+                              [_vm._v("mdi-numeric-8-circle")]
+                            )
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.results.length > 0
+                  ? _c("div", [
+                      _vm.searchComplete
+                        ? _c(
+                            "div",
                             {
-                              staticClass: "mx-auto my-3",
-                              attrs: { "max-width": "450", light: "" }
+                              staticClass: "animated",
+                              class: { zoomIn: _vm.searchComplete }
                             },
                             [
-                              _c("v-img", {
-                                attrs: {
-                                  src: _vm.result.image_url,
-                                  height: "250"
-                                }
-                              }),
-                              _vm._v(" "),
                               _c(
-                                "v-card-text",
+                                "v-card",
+                                {
+                                  staticClass: "mx-auto my-3",
+                                  attrs: { "max-width": "450", light: "" }
+                                },
                                 [
+                                  _c("v-img", {
+                                    attrs: {
+                                      src: _vm.result.image_url,
+                                      height: "250"
+                                    }
+                                  }),
+                                  _vm._v(" "),
                                   _c(
-                                    "v-row",
-                                    { staticClass: "mx-0 headline" },
+                                    "v-card-text",
                                     [
-                                      _vm._v(
-                                        "\n                                " +
-                                          _vm._s(_vm.result.name) +
-                                          "\n                            "
-                                      )
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-row",
-                                    { staticClass: "mx-0" },
-                                    _vm._l(
-                                      _vm.result.location.display_address,
-                                      function(address, addressIndex) {
-                                        return _c(
-                                          "span",
-                                          {
-                                            key: addressIndex,
-                                            staticClass: "mr-2"
-                                          },
-                                          [
-                                            _vm._v(
-                                              "\n                                    " +
-                                                _vm._s(address) +
-                                                "\n                                "
-                                            )
-                                          ]
-                                        )
-                                      }
-                                    ),
-                                    0
-                                  ),
-                                  _vm._v(" "),
-                                  _vm.result.rating >= 0 &&
-                                  _vm.result.rating <= 5
-                                    ? _c(
+                                      _c(
                                         "v-row",
-                                        { staticClass: "mx-0 my-3" },
+                                        { staticClass: "mx-0 headline" },
                                         [
-                                          _c("img", {
-                                            attrs: {
-                                              src:
-                                                "images/yelp/ratings/" +
-                                                _vm.result.rating +
-                                                ".png"
-                                            }
-                                          }),
+                                          _vm._v(
+                                            "\n                                    " +
+                                              _vm._s(_vm.result.name) +
+                                              "\n                                "
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _vm.result.location
+                                        ? _c(
+                                            "v-row",
+                                            { staticClass: "mx-0" },
+                                            _vm._l(
+                                              _vm.result.location
+                                                .display_address,
+                                              function(address, addressIndex) {
+                                                return _c(
+                                                  "span",
+                                                  {
+                                                    key: addressIndex,
+                                                    staticClass: "mr-2"
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      "\n                                        " +
+                                                        _vm._s(address) +
+                                                        "\n                                    "
+                                                    )
+                                                  ]
+                                                )
+                                              }
+                                            ),
+                                            0
+                                          )
+                                        : _vm._e(),
+                                      _vm._v(" "),
+                                      _vm.result.rating >= 0 &&
+                                      _vm.result.rating <= 5
+                                        ? _c(
+                                            "v-row",
+                                            { staticClass: "mx-0 my-3" },
+                                            [
+                                              _c("img", {
+                                                attrs: {
+                                                  src:
+                                                    "images/yelp/ratings/" +
+                                                    _vm.result.rating +
+                                                    ".png"
+                                                }
+                                              }),
+                                              _vm._v(" "),
+                                              _c(
+                                                "span",
+                                                {
+                                                  staticClass:
+                                                    "grey--text ml-4",
+                                                  staticStyle: {
+                                                    "vertical-align": "top"
+                                                  }
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "(" +
+                                                      _vm._s(
+                                                        _vm.result.review_count
+                                                      ) +
+                                                      " Reviews)"
+                                                  )
+                                                ]
+                                              )
+                                            ]
+                                          )
+                                        : _vm._e(),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        { staticClass: "text-left my-3" },
+                                        [
+                                          _vm.result.price
+                                            ? _c(
+                                                "v-chip",
+                                                {
+                                                  attrs: {
+                                                    color: "purple",
+                                                    dark: ""
+                                                  }
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    _vm._s(_vm.result.price)
+                                                  )
+                                                ]
+                                              )
+                                            : _vm._e(),
                                           _vm._v(" "),
+                                          _vm._l(
+                                            _vm.result.categories,
+                                            function(category, index) {
+                                              return _c(
+                                                "v-chip",
+                                                {
+                                                  key: index,
+                                                  staticClass: "ma-1",
+                                                  attrs: {
+                                                    color: "pink",
+                                                    dark: ""
+                                                  }
+                                                },
+                                                [_vm._v(_vm._s(category.title))]
+                                              )
+                                            }
+                                          )
+                                        ],
+                                        2
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        { staticClass: "text-right my-4" },
+                                        [
                                           _c(
-                                            "span",
+                                            "a",
                                             {
-                                              staticClass: "grey--text ml-4",
-                                              staticStyle: {
-                                                "vertical-align": "top"
+                                              staticClass:
+                                                "black--text font-weight-bold",
+                                              attrs: {
+                                                href: _vm.result.url,
+                                                target: "_blank"
                                               }
                                             },
                                             [
-                                              _vm._v(
-                                                "(" +
-                                                  _vm._s(
-                                                    _vm.result.review_count
-                                                  ) +
-                                                  " Reviews)"
-                                              )
+                                              _vm._v("View on "),
+                                              _c("img", {
+                                                staticStyle: {
+                                                  "vertical-align": "bottom"
+                                                },
+                                                attrs: {
+                                                  src: "images/yelp/logo.png",
+                                                  height: "32"
+                                                }
+                                              })
                                             ]
                                           )
                                         ]
                                       )
-                                    : _vm._e(),
-                                  _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    { staticClass: "text-left my-3" },
-                                    [
-                                      _vm.result.price
-                                        ? _c(
-                                            "v-chip",
-                                            {
-                                              attrs: {
-                                                color: "purple",
-                                                dark: ""
-                                              }
-                                            },
-                                            [_vm._v(_vm._s(_vm.result.price))]
-                                          )
-                                        : _vm._e(),
-                                      _vm._v(" "),
-                                      _vm._l(_vm.result.categories, function(
-                                        category,
-                                        index
-                                      ) {
-                                        return _c(
-                                          "v-chip",
-                                          {
-                                            key: index,
-                                            staticClass: "ma-1",
-                                            attrs: { color: "pink", dark: "" }
-                                          },
-                                          [_vm._v(_vm._s(category.title))]
-                                        )
-                                      })
                                     ],
-                                    2
+                                    1
+                                  )
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "mt-5 text-center" },
+                                [
+                                  _c(
+                                    "v-btn",
+                                    {
+                                      attrs: { color: "white", text: "" },
+                                      on: { click: _vm.tryAgain }
+                                    },
+                                    [_vm._v("Try Again?")]
                                   ),
                                   _vm._v(" "),
                                   _c(
-                                    "div",
-                                    { staticClass: "text-right my-3" },
-                                    [
-                                      _c(
-                                        "a",
-                                        {
-                                          staticClass:
-                                            "black--text font-weight-bold",
-                                          attrs: {
-                                            href: _vm.result.url,
-                                            target: "_blank"
-                                          }
-                                        },
-                                        [
-                                          _vm._v("View on "),
-                                          _c("img", {
-                                            staticStyle: {
-                                              "vertical-align": "bottom"
-                                            },
-                                            attrs: {
-                                              src: "images/yelp/logo.png",
-                                              height: "32"
-                                            }
-                                          })
-                                        ]
-                                      )
-                                    ]
+                                    "v-btn",
+                                    {
+                                      attrs: { color: "white", text: "" },
+                                      on: { click: _vm.clearResults }
+                                    },
+                                    [_vm._v("Clear")]
                                   )
                                 ],
                                 1
                               )
                             ],
                             1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "mt-5 text-center" },
-                            [
-                              _c(
-                                "v-btn",
-                                {
-                                  attrs: { color: "white", text: "" },
-                                  on: { click: _vm.tryAgain }
-                                },
-                                [_vm._v("Try Again?")]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "v-btn",
-                                {
-                                  attrs: { color: "white", text: "" },
-                                  on: { click: _vm.clearResults }
-                                },
-                                [_vm._v("Clear")]
-                              )
-                            ],
-                            1
                           )
-                        ],
-                        1
-                      )
-                    : _vm._e()
-                ],
-                1
-              )
+                        : _vm._e()
+                    ])
+                  : _vm._e()
+              ])
             ],
             1
           ),
