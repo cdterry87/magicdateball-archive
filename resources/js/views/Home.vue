@@ -69,9 +69,6 @@
                                             <v-icon>mdi-information</v-icon>
                                             Magic Date Ball is using your location to find nearby results.
                                             <a class="font-weight-bold" @click="disableGeolocation">Click here to manually set your location.</a>
-                                            <div>
-
-                                            </div>
                                         </div>
                                     </v-col>
                                     <v-col cols="12">
