@@ -1941,6 +1941,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'Home',
   data: function data() {
@@ -19788,6 +19792,19 @@ var render = function() {
                                   )
                                 ],
                                 1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "animated bounceInUp mt-5 headline"
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                            Click the 8-Ball to Begin!\n                        "
+                                  )
+                                ]
                               )
                             ],
                             1

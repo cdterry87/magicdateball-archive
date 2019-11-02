@@ -15,6 +15,10 @@
                             <v-avatar class="animated elevation-10 text-center" :class="{bounceInDown: (!isSearching && !searchComplete), wobble: isSearching, fadeOut: searchComplete}" color="black" size="300">
                                 <v-icon dark size="150" @click="openDialog">mdi-numeric-8-circle</v-icon>
                             </v-avatar>
+
+                            <div class="animated bounceInUp mt-5 headline">
+                                Click the 8-Ball to Begin!
+                            </div>
                         </div>
 
                         <div v-if="results.length > 0">
