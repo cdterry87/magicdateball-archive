@@ -20299,7 +20299,23 @@ var render = function() {
       ),
       _vm._v(" "),
       _c("div", { staticClass: "footer caption text-center mt-5 mb-3" }, [
-        _vm._v("\n        Magic Date Ball © 2019\n    ")
+        _c(
+          "a",
+          { staticClass: "mr-2", attrs: { href: "https://chaseterry.com" } },
+          [_vm._v("Chase Terry © 2019")]
+        ),
+        _vm._v(" | "),
+        _c(
+          "a",
+          {
+            staticClass: "ml-2",
+            attrs: {
+              href: "https://github.com/cdterry87/MagicDateBall.git",
+              target: "_blank"
+            }
+          },
+          [_vm._v("Source")]
+        )
       ])
     ],
     1

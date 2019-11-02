@@ -100,7 +100,7 @@
             </v-container>
         </v-content>
         <div class="footer caption text-center mt-5 mb-3">
-            Magic Date Ball &copy; 2019
+            <a href="https://chaseterry.com" class="mr-2">Chase Terry &copy; 2019</a> | <a href="https://github.com/cdterry87/MagicDateBall.git" target="_blank" class="ml-2">Source</a>
         </div>
     </v-app>
 </template>
