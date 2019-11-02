@@ -1951,6 +1951,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'Home',
   data: function data() {
@@ -1967,6 +1971,8 @@ __webpack_require__.r(__webpack_exports__);
       longitude: '',
       keyword: '',
       radius: 2,
+      minRating: 4,
+      minRatingValues: [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5],
       radiusValues: [8000, 16000, 24000, 32000, 40000],
       radiusLabels: [5, 10, 15, 20, 25],
       priceRange: [1, 2],
@@ -2021,7 +2027,13 @@ __webpack_require__.r(__webpack_exports__);
             keyword: keyword
           }
         }).then(function (response) {
-          _this.results = response.data.businesses;
+          if (_this.minRating == '' || _this.minRating == 0) {
+            _this.results = response.data.businesses;
+          } else {
+            var results = response.data.businesses;
+            _this.results = results.filter(_this.filterResultsByRating);
+          }
+
           localStorage.setItem('yelpResults', JSON.stringify(_this.results));
 
           _this.chooseRandom();
@@ -2038,6 +2050,9 @@ __webpack_require__.r(__webpack_exports__);
           }.bind(_this), 999);
         });
       }
+    },
+    filterResultsByRating: function filterResultsByRating(result) {
+      return result.rating >= this.minRatingValues[this.minRating - 1];
     },
     chooseRandom: function chooseRandom() {
       this.result = this.results[Math.floor(Math.random() * this.results.length)];
@@ -20118,78 +20133,86 @@ var render = function() {
                             [
                               _c(
                                 "v-container",
+                                { staticClass: "py-0" },
                                 [
                                   _c(
                                     "v-row",
                                     [
-                                      _c("v-col", { attrs: { cols: "12" } }, [
-                                        !_vm.geolocation
-                                          ? _c(
-                                              "div",
-                                              [
-                                                _c("v-text-field", {
-                                                  ref: "location",
-                                                  attrs: {
-                                                    "hide-details": "",
-                                                    outlined: "",
-                                                    "prepend-inner-icon":
-                                                      "mdi-map-marker",
-                                                    id: "location",
-                                                    label:
-                                                      "Location (City/State/Zip)",
-                                                    color: "pink",
-                                                    autocomplete: "off",
-                                                    rules: [
-                                                      function(v) {
-                                                        return (
-                                                          !!v ||
-                                                          "City/State/Zip is required"
-                                                        )
-                                                      }
-                                                    ],
-                                                    required: ""
-                                                  },
-                                                  model: {
-                                                    value: _vm.location,
-                                                    callback: function($$v) {
-                                                      _vm.location = $$v
+                                      _c(
+                                        "v-col",
+                                        {
+                                          staticClass: "py-0",
+                                          attrs: { cols: "12" }
+                                        },
+                                        [
+                                          !_vm.geolocation
+                                            ? _c(
+                                                "div",
+                                                [
+                                                  _c("v-text-field", {
+                                                    ref: "location",
+                                                    attrs: {
+                                                      "hide-details": "",
+                                                      outlined: "",
+                                                      "prepend-inner-icon":
+                                                        "mdi-map-marker",
+                                                      id: "location",
+                                                      label:
+                                                        "Location (City/State/Zip)",
+                                                      color: "pink",
+                                                      autocomplete: "off",
+                                                      rules: [
+                                                        function(v) {
+                                                          return (
+                                                            !!v ||
+                                                            "City/State/Zip is required"
+                                                          )
+                                                        }
+                                                      ],
+                                                      required: ""
                                                     },
-                                                    expression: "location"
-                                                  }
-                                                })
-                                              ],
-                                              1
-                                            )
-                                          : _c(
-                                              "div",
-                                              { staticClass: "caption" },
-                                              [
-                                                _c("v-icon", [
-                                                  _vm._v("mdi-information")
-                                                ]),
-                                                _vm._v(
-                                                  " Magic Date Ball is using your location to find nearby results.\n                                            "
-                                                ),
-                                                _c(
-                                                  "a",
-                                                  {
-                                                    staticClass:
-                                                      "font-weight-bold",
-                                                    on: {
-                                                      click:
-                                                        _vm.disableGeolocation
+                                                    model: {
+                                                      value: _vm.location,
+                                                      callback: function($$v) {
+                                                        _vm.location = $$v
+                                                      },
+                                                      expression: "location"
                                                     }
-                                                  },
-                                                  [
-                                                    _vm._v(
-                                                      "Click here to manually set your location."
-                                                    )
-                                                  ]
-                                                )
-                                              ],
-                                              1
-                                            )
-                                      ]),
+                                                  })
+                                                ],
+                                                1
+                                              )
+                                            : _c(
+                                                "div",
+                                                { staticClass: "caption" },
+                                                [
+                                                  _c("v-icon", [
+                                                    _vm._v("mdi-information")
+                                                  ]),
+                                                  _vm._v(
+                                                    " Magic Date Ball is using your location to find nearby results.\n                                            "
+                                                  ),
+                                                  _c(
+                                                    "a",
+                                                    {
+                                                      staticClass:
+                                                        "font-weight-bold",
+                                                      on: {
+                                                        click:
+                                                          _vm.disableGeolocation
+                                                      }
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        "Click here to manually set your location."
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              )
+                                        ]
+                                      ),
                                       _vm._v(" "),
                                       _c(
                                         "v-col",
@@ -20201,6 +20224,7 @@ var render = function() {
                                           _vm._v(" "),
                                           _c("v-slider", {
                                             attrs: {
+                                              "hide-details": "",
                                               color: "pink",
                                               "track-color": "purple",
                                               min: "0",
@@ -20228,6 +20252,7 @@ var render = function() {
                                           _vm._v(" "),
                                           _c("v-range-slider", {
                                             attrs: {
+                                              "hide-details": "",
                                               color: "pink",
                                               "track-color": "purple",
                                               min: "0",
@@ -20241,6 +20266,35 @@ var render = function() {
                                                 _vm.priceRange = $$v
                                               },
                                               expression: "priceRange"
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-col",
+                                        { attrs: { cols: "12" } },
+                                        [
+                                          _c("v-subheader", [
+                                            _vm._v("Minimum Rating")
+                                          ]),
+                                          _vm._v(" "),
+                                          _c("v-slider", {
+                                            attrs: {
+                                              color: "pink",
+                                              "track-color": "purple",
+                                              min: "1",
+                                              max: "9",
+                                              ticks: "always",
+                                              "tick-labels": _vm.minRatingValues
+                                            },
+                                            model: {
+                                              value: _vm.minRating,
+                                              callback: function($$v) {
+                                                _vm.minRating = $$v
+                                              },
+                                              expression: "minRating"
                                             }
                                           })
                                         ],

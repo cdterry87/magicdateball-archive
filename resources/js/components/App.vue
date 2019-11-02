@@ -70,9 +70,9 @@
                                 <span class="headline">Just a few more details!</span>
                             </v-card-title>
                             <v-card-text class="pb-0">
-                                <v-container>
+                                <v-container class="py-0">
                                     <v-row>
-                                        <v-col cols="12">
+                                        <v-col cols="12" class="py-0">
                                             <div v-if="!geolocation">
                                                 <v-text-field hide-details outlined prepend-inner-icon="mdi-map-marker" v-model="location" ref="location" id="location" label="Location (City/State/Zip)" color="pink" autocomplete="off" :rules="[v => !!v || 'City/State/Zip is required']" required></v-text-field>
                                             </div>
@@ -83,11 +83,15 @@
                                         </v-col>
                                         <v-col cols="12">
                                             <v-subheader>Radius (miles)</v-subheader>
-                                            <v-slider v-model="radius" color="pink" track-color="purple" min="0" max="4" ticks="always" :tick-labels="radiusLabels"></v-slider>
+                                            <v-slider hide-details v-model="radius" color="pink" track-color="purple" min="0" max="4" ticks="always" :tick-labels="radiusLabels"></v-slider>
                                         </v-col>
                                         <v-col cols="12">
                                             <v-subheader>Price</v-subheader>
-                                            <v-range-slider v-model="priceRange" color="pink" track-color="purple" min="0" max="3" ticks="always" :tick-labels="priceLabels" ></v-range-slider>
+                                            <v-range-slider hide-details v-model="priceRange" color="pink" track-color="purple" min="0" max="3" ticks="always" :tick-labels="priceLabels" ></v-range-slider>
+                                        </v-col>
+                                        <v-col cols="12">
+                                            <v-subheader>Minimum Rating</v-subheader>
+                                            <v-slider v-model="minRating" color="pink" track-color="purple" min="1" max="9" ticks="always" :tick-labels="minRatingValues"></v-slider>
                                         </v-col>
                                         <v-col cols="12">
                                             <v-text-field hide-details outlined prepend-inner-icon="mdi-key" v-model="keyword" ref="keyword" id="keyword" label="Keyword (optional)" placeholder="(i.e. Japanese, sushi, etc.)" color="pink" autocomplete="off"></v-text-field>
@@ -128,6 +132,8 @@ export default {
             longitude: '',
             keyword: '',
             radius: 2,
+            minRating: 4,
+            minRatingValues: [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5],
             radiusValues: [8000, 16000, 24000, 32000, 40000],
             radiusLabels: [5, 10, 15, 20, 25],
             priceRange: [1,2],
@@ -178,7 +184,12 @@ export default {
                     }
                 })
                 .then(response => {
-                    this.results = response.data.businesses
+                    if (this.minRating == '' || this.minRating == 0) {
+                        this.results = response.data.businesses
+                    } else {
+                        let results = response.data.businesses
+                        this.results = results.filter(this.filterResultsByRating)
+                    }
                     localStorage.setItem('yelpResults', JSON.stringify(this.results))
 
                     this.chooseRandom()
@@ -194,6 +205,9 @@ export default {
                     }.bind(this), 999)
                 })
             }
+        },
+        filterResultsByRating(result) {
+            return result.rating >= this.minRatingValues[this.minRating - 1]
         },
         chooseRandom() {
             this.result = this.results[Math.floor(Math.random()*this.results.length)]
