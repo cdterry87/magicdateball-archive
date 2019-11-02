@@ -19789,7 +19789,7 @@ var render = function() {
                                   class: {
                                     bounceInDown:
                                       !_vm.isSearching && !_vm.searchComplete,
-                                    wobble: _vm.isSearching,
+                                    shake: _vm.isSearching,
                                     fadeOut: _vm.searchComplete
                                   },
                                   attrs: { color: "black", size: "300" }

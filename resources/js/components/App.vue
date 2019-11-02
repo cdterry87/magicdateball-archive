@@ -12,7 +12,7 @@
                         </div>
 
                         <div v-if="results.length == 0 || isSearching">
-                            <v-avatar class="animated elevation-10 text-center" :class="{bounceInDown: (!isSearching && !searchComplete), wobble: isSearching, fadeOut: searchComplete}" color="black" size="300">
+                            <v-avatar class="animated elevation-10 text-center" :class="{bounceInDown: (!isSearching && !searchComplete), shake: isSearching, fadeOut: searchComplete}" color="black" size="300">
                                 <v-icon dark size="150" @click="openDialog">mdi-numeric-8-circle</v-icon>
                             </v-avatar>
 
