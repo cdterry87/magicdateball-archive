@@ -13,17 +13,6 @@ const vuetifyOpts = {
     },
 }
 
-// Router settings
-import VueRouter from 'vue-router'
-import routes from './routes'
-
-Vue.use(VueRouter)
-
-const router = new VueRouter({
-    mode: 'history',
-    routes,
-})
-
 //Primary components
 import App from './components/App'
 
@@ -34,5 +23,4 @@ const app = new Vue({
         App
     },
     vuetify: new Vuetify(vuetifyOpts),
-    router,
 });
