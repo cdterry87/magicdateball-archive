@@ -1985,6 +1985,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'Home',
   data: function data() {
@@ -20206,32 +20208,32 @@ var render = function() {
                                         )
                                       : _c(
                                           "div",
-                                          {
-                                            staticClass: "caption text-center"
-                                          },
+                                          { staticClass: "caption" },
                                           [
+                                            _c("v-icon", [
+                                              _vm._v("mdi-information")
+                                            ]),
                                             _vm._v(
-                                              "\n                                        Magic Date Ball is using your location to find nearby results!\n                                        "
+                                              "\n                                        Magic Date Ball is using your location to find nearby results.\n                                        "
                                             ),
-                                            _c("div", [
-                                              _c(
-                                                "a",
-                                                {
-                                                  staticClass:
-                                                    "font-weight-bold",
-                                                  on: {
-                                                    click:
-                                                      _vm.disableGeolocation
-                                                  }
-                                                },
-                                                [
-                                                  _vm._v(
-                                                    "Click here to manually set your location."
-                                                  )
-                                                ]
-                                              )
-                                            ])
-                                          ]
+                                            _c(
+                                              "a",
+                                              {
+                                                staticClass: "font-weight-bold",
+                                                on: {
+                                                  click: _vm.disableGeolocation
+                                                }
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "Click here to manually set your location."
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c("div")
+                                          ],
+                                          1
                                         )
                                   ]),
                                   _vm._v(" "),

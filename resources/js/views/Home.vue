@@ -65,10 +65,12 @@
                                         <div v-if="!geolocation">
                                             <v-text-field hide-details outlined prepend-inner-icon="mdi-map-marker" v-model="location" ref="location" id="location" label="Location (City/State/Zip)" color="pink" autocomplete="off" :rules="[v => !!v || 'City/State/Zip is required']" required></v-text-field>
                                         </div>
-                                        <div v-else class="caption text-center">
-                                            Magic Date Ball is using your location to find nearby results!
+                                        <div v-else class="caption">
+                                            <v-icon>mdi-information</v-icon>
+                                            Magic Date Ball is using your location to find nearby results.
+                                            <a class="font-weight-bold" @click="disableGeolocation">Click here to manually set your location.</a>
                                             <div>
-                                                <a class="font-weight-bold" @click="disableGeolocation">Click here to manually set your location.</a>
+
                                             </div>
                                         </div>
                                     </v-col>
