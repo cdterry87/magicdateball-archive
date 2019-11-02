@@ -1945,6 +1945,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'Home',
   data: function data() {
@@ -1967,7 +1973,8 @@ __webpack_require__.r(__webpack_exports__);
       priceValues: [1, 2, 3, 4],
       priceLabels: ['$', '$$', '$$$', '$$$$'],
       result: '',
-      results: []
+      results: [],
+      noResults: false
     };
   },
   methods: {
@@ -1981,6 +1988,7 @@ __webpack_require__.r(__webpack_exports__);
         this.isSearching = true;
         this.dialog = false;
         this.loading = true;
+        this.noResults = false;
         var location = this.location;
         var latitude = this.latitude;
         var longitude = this.longitude;
@@ -2021,7 +2029,12 @@ __webpack_require__.r(__webpack_exports__);
           _this.loading = false;
           setTimeout(function () {
             this.isSearching = false;
-            this.searchComplete = true;
+
+            if (this.results.length > 0) {
+              this.searchComplete = true;
+            } else {
+              this.noResults = true;
+            }
           }.bind(_this), 999);
         });
       }
@@ -19798,12 +19811,24 @@ var render = function() {
                                 "div",
                                 {
                                   staticClass:
-                                    "animated bounceInUp mt-5 headline"
+                                    "animated bounceInUp mt-8 headline"
                                 },
                                 [
-                                  _vm._v(
-                                    "\n                            Click the 8-Ball to Begin!\n                        "
-                                  )
+                                  _vm.noResults
+                                    ? _c("div", [
+                                        _c("p", [
+                                          _vm._v(
+                                            "Sorry, no results were found."
+                                          )
+                                        ]),
+                                        _vm._v(" "),
+                                        _c("p", [_vm._v("Please try again.")])
+                                      ])
+                                    : _c("div", [
+                                        _vm._v(
+                                          "\n                                Click the 8-Ball to Begin!\n                            "
+                                        )
+                                      ])
                                 ]
                               )
                             ],

@@ -16,8 +16,14 @@
                                 <v-icon dark size="150" @click="openDialog">mdi-numeric-8-circle</v-icon>
                             </v-avatar>
 
-                            <div class="animated bounceInUp mt-5 headline">
-                                Click the 8-Ball to Begin!
+                            <div class="animated bounceInUp mt-8 headline">
+                                <div v-if="noResults">
+                                    <p>Sorry, no results were found.</p>
+                                    <p>Please try again.</p>
+                                </div>
+                                <div v-else>
+                                    Click the 8-Ball to Begin!
+                                </div>
                             </div>
                         </div>
 
@@ -128,7 +134,8 @@ export default {
             priceValues: [1, 2, 3, 4],
             priceLabels: ['$', '$$', '$$$', '$$$$'],
             result: '',
-            results: []
+            results: [],
+            noResults: false
         }
     },
     methods: {
@@ -140,6 +147,7 @@ export default {
                 this.isSearching = true
                 this.dialog = false
                 this.loading = true
+                this.noResults = false
 
                 let location = this.location
                 let latitude = this.latitude
@@ -178,7 +186,11 @@ export default {
                     this.loading = false
                     setTimeout(function() {
                         this.isSearching = false
-                        this.searchComplete = true
+                        if (this.results.length > 0) {
+                            this.searchComplete = true
+                        } else {
+                            this.noResults = true
+                        }
                     }.bind(this), 999)
                 })
             }
