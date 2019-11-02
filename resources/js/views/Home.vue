@@ -17,7 +17,7 @@
                     </div>
 
                     <div v-if="results.length > 0">
-                        <div v-if="searchComplete" class="animated" :class="{zoomIn: searchComplete}">
+                        <div v-if="searchComplete || tryingAgain || triedAgain" class="animated" :class="{zoomIn: (searchComplete && !tryingAgain), flipOutY: tryingAgain, flipInY: triedAgain}">
                             <v-card class="mx-auto my-3" max-width="450" light>
                                 <v-img :src="result.image_url" height="250"></v-img>
                                 <v-card-text>
@@ -115,6 +115,8 @@
                 loading: false,
                 isSearching: false,
                 searchComplete: false,
+                tryingAgain: false,
+                triedAgain: false,
                 zip: '',
                 keyword: '',
                 radius: 2,
@@ -195,12 +197,21 @@
                 this.results = []
                 this.searchComplete = false
                 this.isSearching = false
+                this.tryingAgain = false
+                this.triedAgain = false
                 localStorage.removeItem('mdbResult')
                 localStorage.removeItem('yelpResults')
             },
             tryAgain() {
+                this.tryingAgain = true
+                this.searchComplete = false
                 localStorage.removeItem('mdbResult')
-                this.chooseRandom()
+
+                setTimeout(function() {
+                    this.chooseRandom()
+                    this.tryingAgain = false
+                    this.triedAgain = true
+                }.bind(this), 999)
             }
         },
         mounted() {

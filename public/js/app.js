@@ -1985,6 +1985,8 @@ __webpack_require__.r(__webpack_exports__);
       loading: false,
       isSearching: false,
       searchComplete: false,
+      tryingAgain: false,
+      triedAgain: false,
       zip: '',
       keyword: '',
       radius: 2,
@@ -2063,12 +2065,20 @@ __webpack_require__.r(__webpack_exports__);
       this.results = [];
       this.searchComplete = false;
       this.isSearching = false;
+      this.tryingAgain = false;
+      this.triedAgain = false;
       localStorage.removeItem('mdbResult');
       localStorage.removeItem('yelpResults');
     },
     tryAgain: function tryAgain() {
+      this.tryingAgain = true;
+      this.searchComplete = false;
       localStorage.removeItem('mdbResult');
-      this.chooseRandom();
+      setTimeout(function () {
+        this.chooseRandom();
+        this.tryingAgain = false;
+        this.triedAgain = true;
+      }.bind(this), 999);
     }
   },
   mounted: function mounted() {
@@ -19857,12 +19867,16 @@ var render = function() {
                 _vm._v(" "),
                 _vm.results.length > 0
                   ? _c("div", [
-                      _vm.searchComplete
+                      _vm.searchComplete || _vm.tryingAgain || _vm.triedAgain
                         ? _c(
                             "div",
                             {
                               staticClass: "animated",
-                              class: { zoomIn: _vm.searchComplete }
+                              class: {
+                                zoomIn: _vm.searchComplete && !_vm.tryingAgain,
+                                flipOutY: _vm.tryingAgain,
+                                flipInY: _vm.triedAgain
+                              }
                             },
                             [
                               _c(
