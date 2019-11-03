@@ -176,6 +176,7 @@ export default {
 
                 localStorage.setItem('mdbLocation', location)
                 localStorage.setItem('mdbRadius', this.radius)
+                localStorage.setItem('mdbMinRating', this.minRating)
                 localStorage.setItem('mdbPriceRange', JSON.stringify(this.priceRange))
 
                 axios.get('/api/search', {
@@ -265,6 +266,7 @@ export default {
         let mdbResult = localStorage.getItem('mdbResult')
         let mdbLocation = localStorage.getItem('mdbLocation')
         let mdbRadius = localStorage.getItem('mdbRadius')
+        let mdbMinRating = localStorage.getItem('mdbMinRating')
         let mdbPriceRange = localStorage.getItem('mdbPriceRange')
 
         if (yelpResults) {
@@ -282,6 +284,10 @@ export default {
 
         if (mdbRadius) {
             this.radius = JSON.parse(mdbRadius)
+        }
+
+        if (mdbMinRating) {
+            this.minRating = JSON.parse(mdbMinRating)
         }
 
         if (mdbPriceRange) {
