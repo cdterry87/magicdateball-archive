@@ -21,7 +21,8 @@ class HomeController extends Controller
             'term' => $request->keyword . ' restaurants',
             'open_now' => true,
             'price' => $request->price,
-            'radius' => $request->radius
+            'radius' => $request->radius,
+            'sort_by' => 'rating'
         ];
 
         if ($request->latitude != '' and $request->longitude != '') {
