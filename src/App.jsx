@@ -9,12 +9,13 @@ function App() {
     axios
       .get(YELP_API_URL, {
         params: {
-          limit: 50,
-          term: 'sushi restaurants',
-          open_now: true,
-          price: '',
-          radius: '',
-          sort_by: 'rating'
+          location: 'memphis',
+          term: 'sushi',
+          sort_by: 'rating',
+          limit: 5
+          // open_now: true,
+          // price: '',
+          // radius: '',
         },
         headers: {
           Accept: 'application/json',
