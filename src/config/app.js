@@ -1,0 +1,2 @@
+export const YELP_API_URL = 'https://api.yelp.com/v3/businesses/search'
+export const YELP_API_KEY = 'pS8i0UyHrqi2_XVhRP50ojrIL1s6-77sJ-uqICyY4sfm60lpoXPZ-_whyZroNzTTdqNZSwwx4RdnCoUb_N0M1eQrLwM4REhaXbECEPQhs2SzijJvDjcbSzQgIdSnXXYx'
