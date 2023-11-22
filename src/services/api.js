@@ -1,9 +1,7 @@
-// api.js
-
 import axios from 'axios';
 
 const apiKey = 'pS8i0UyHrqi2_XVhRP50ojrIL1s6-77sJ-uqICyY4sfm60lpoXPZ-_whyZroNzTTdqNZSwwx4RdnCoUb_N0M1eQrLwM4REhaXbECEPQhs2SzijJvDjcbSzQgIdSnXXYx';
-const apiUrl = 'https://magicdateball.vercel.app:3001/api/businesses/search';       // Prod endpoint
+const apiUrl = 'https://magicdateball-cdterry87s-projects.vercel.app:3001/api/businesses/search';       // Prod endpoint
 // const apiUrl = 'http://localhost:3001/api/businesses/search';       // Proxy endpoint
 // const apiUrl = 'https://api.yelp.com/v3/businesses/search';      // Direct endpoint
 

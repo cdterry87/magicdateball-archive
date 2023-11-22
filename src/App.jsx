@@ -51,6 +51,7 @@ function App() {
           <h2 className='text-lg sm:text-2xl text-center font-semibold'>
             Where do you want to eat? Ask the Magic Date Ball!
           </h2>
+          <h3>Updated App...</h3>
         </div>
         <EightBall />
         <h3 className='text-lg sm:text-2xl text-center'>
