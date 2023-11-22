@@ -1,30 +1,44 @@
-import axios from 'axios'
+import React, { useState } from 'react'
+
 import EightBall from 'components/EightBall'
 import Modal from 'components/Modal'
 
-import { YELP_API_URL, YELP_API_KEY } from 'config/app'
+import { searchBusinesses } from 'services/api'
 
 function App() {
-  const search = () => {
-    axios
-      .get(YELP_API_URL, {
-        params: {
-          location: 'memphis',
-          term: 'sushi',
-          sort_by: 'rating',
-          limit: 5
-          // open_now: true,
-          // price: '',
-          // radius: '',
-        },
-        headers: {
-          Accept: 'application/json',
-          Authorization: 'Bearer ' + YELP_API_KEY
-        }
-      })
-      .then(response => response.json())
-      .then(response => console.log(response))
-      .catch(err => console.error(err))
+  const [results, setResults] = useState([])
+  // const [location, setLocation] = useState('')
+  // const [price, setPrice] = useState(2)
+  // const [radius, setRadius] = useState(2)
+  // const [rating, setRating] = useState(4)
+  // const [term, setTerm] = useState('')
+
+  const handleSearch = async () => {
+    // const minRatingValues = [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5]
+    // const radiusValues = [8000, 16000, 24000, 32000, 40000]
+    // const radiusLabels = [5, 10, 15, 20, 25]
+    // const priceValues = [1, 2, 3, 4]
+    // const priceLabels = ['$', '$$', '$$$', '$$$$']
+
+    const location = 'memphis'
+    const price = '2'
+    const radius = '16000'
+    const rating = '4'
+    const term = null
+
+    try {
+      const businesses = await searchBusinesses(
+        location,
+        price,
+        radius,
+        rating,
+        term
+      )
+      console.log('businesses', businesses)
+      setResults(businesses)
+    } catch (error) {
+      console.log('error', error)
+    }
   }
 
   return (
@@ -43,7 +57,7 @@ function App() {
           Click the 8-ball to begin!
         </h3>
       </div>
-      <Modal search={search} />
+      <Modal search={handleSearch} />
     </div>
   )
 }
