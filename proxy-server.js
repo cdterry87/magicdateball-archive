@@ -1,3 +1,5 @@
+import { API_KEY, API_TARGET_URL } from 'config/app'
+
 const express = require('express');
 const cors = require('cors');
 const { createProxyMiddleware } = require('http-proxy-middleware');
@@ -5,17 +7,15 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 const app = express();
 app.use(cors());
 
-const apiKey = 'pS8i0UyHrqi2_XVhRP50ojrIL1s6-77sJ-uqICyY4sfm60lpoXPZ-_whyZroNzTTdqNZSwwx4RdnCoUb_N0M1eQrLwM4REhaXbECEPQhs2SzijJvDjcbSzQgIdSnXXYx';
-
 const apiProxy = createProxyMiddleware('/api', {
-    target: 'https://api.yelp.com/v3',
+    target: API_TARGET,
     changeOrigin: true,
     pathRewrite: {
         '^/api': '', // Remove the /api prefix when forwarding the request
     },
     onProxyReq(proxyReq, req, res) {
         // Add any headers you need for the Yelp API (e.g., API key)
-        proxyReq.setHeader('Authorization', 'Bearer ' + apiKey);
+        proxyReq.setHeader('Authorization', 'Bearer ' + API_KEY);
         proxyReq.setHeader('Accept', 'application/json');
     },
 });

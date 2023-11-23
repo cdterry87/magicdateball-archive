@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import EightBall from 'components/EightBall'
 import Modal from 'components/Modal'
@@ -7,30 +7,23 @@ import { searchBusinesses } from 'services/api'
 
 function App() {
   const [results, setResults] = useState([])
-  // const [location, setLocation] = useState('')
-  // const [price, setPrice] = useState(2)
-  // const [radius, setRadius] = useState(2)
-  // const [rating, setRating] = useState(4)
-  // const [term, setTerm] = useState('')
+  const [isGeolocationEnabled, setIsGeolocationEnabled] = useState(false)
+  const [location, setLocation] = useState('')
+  const [latitude, setLatitude] = useState(0)
+  const [longitude, setLongitude] = useState(0)
+  const [radius, setRadius] = useState(0)
+  const [price, setPrice] = useState(2)
+  const [rating, setRating] = useState(4)
+  const [term, setTerm] = useState('')
 
-  const handleSearch = async () => {
-    // const minRatingValues = [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5]
-    // const radiusValues = [8000, 16000, 24000, 32000, 40000]
-    // const radiusLabels = [5, 10, 15, 20, 25]
-    // const priceValues = [1, 2, 3, 4]
-    // const priceLabels = ['$', '$$', '$$$', '$$$$']
-
-    const location = 'memphis'
-    const price = '2'
-    const radius = '16000'
-    const rating = '4'
-    const term = null
-
+  const search = async () => {
     try {
       const businesses = await searchBusinesses(
         location,
-        price,
+        latitude,
+        longitude,
         radius,
+        price,
         rating,
         term
       )
@@ -40,6 +33,33 @@ function App() {
       console.log('error', error)
     }
   }
+
+  const disableGeolocation = () => {
+    setIsGeolocationEnabled(false)
+    setLatitude(0)
+    setLongitude(0)
+  }
+
+  // useEffect on initial load
+  useEffect(() => {
+    // Enable or disable geolocation
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          setIsGeolocationEnabled(true)
+          setLatitude(position.coords.latitude)
+          setLongitude(position.coords.longitude)
+          setRadius(24000)
+        },
+        () => {
+          setIsGeolocationEnabled(false)
+          setLatitude(0)
+          setLongitude(0)
+          setRadius(0)
+        }
+      )
+    }
+  }, [])
 
   return (
     <div id='app' className='min-h-screen flex items-center justify-center'>
@@ -51,14 +71,22 @@ function App() {
           <h2 className='text-lg sm:text-2xl text-center font-semibold'>
             Where do you want to eat? Ask the Magic Date Ball!
           </h2>
-          <h3>Updated App...</h3>
         </div>
         <EightBall />
         <h3 className='text-lg sm:text-2xl text-center'>
           Click the 8-ball to begin!
         </h3>
       </div>
-      <Modal search={handleSearch} />
+      <Modal
+        search={search}
+        isGeolocationEnabled={isGeolocationEnabled}
+        disableGeolocation={disableGeolocation}
+        setLocation={setLocation}
+        setRadius={setRadius}
+        setPrice={setPrice}
+        setRating={setRating}
+        setTerm={setTerm}
+      />
     </div>
   )
 }

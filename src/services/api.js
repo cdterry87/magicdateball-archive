@@ -1,27 +1,19 @@
 import axios from 'axios';
+import { API_PROXY_URL } from 'config/app'
 
-const apiKey = 'pS8i0UyHrqi2_XVhRP50ojrIL1s6-77sJ-uqICyY4sfm60lpoXPZ-_whyZroNzTTdqNZSwwx4RdnCoUb_N0M1eQrLwM4REhaXbECEPQhs2SzijJvDjcbSzQgIdSnXXYx';
-const apiUrl = 'https://magicdateball-cdterry87s-projects.vercel.app:3001/api/businesses/search';       // Prod endpoint
-// const apiUrl = 'http://localhost:3001/api/businesses/search';       // Proxy endpoint
-// const apiUrl = 'https://api.yelp.com/v3/businesses/search';      // Direct endpoint
-
-const headers = {
-    Authorization: `Bearer ${apiKey}`,
-    'Content-Type': 'application/json',
-};
-
-export const searchBusinesses = async (location, price, radius, rating, term) => {
+export const searchBusinesses = async (location, latitude, longitude, radius, price, rating, term) => {
     try {
-        const response = await axios.get(apiUrl, {
-            headers,
+        const response = await axios.get(API_PROXY_URL, {
             params: {
                 location,
+                latitude: latitude || undefined,
+                longitude: longitude || undefined,
+                radius: radius || undefined,
                 price,
-                radius,
                 rating,
-                term,
+                term: term || undefined,
                 sort_by: 'rating',
-                limit: 25,
+                limit: 50,
                 open_now: true,
             },
         });
@@ -30,8 +22,4 @@ export const searchBusinesses = async (location, price, radius, rating, term) =>
         console.error('Error fetching data from Yelp API', error);
         throw error;
     }
-};
-
-export default {
-    searchBusinesses,
-};
+}
