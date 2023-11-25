@@ -30,6 +30,8 @@ function ResultCard({
   } = result
 
   const { display_address = [] } = location || {}
+  // Turn the display_address array into a string
+  const address = display_address.join(', ')
 
   let cardAnimationClass
   if (isSearchComplete && !isTryingAgain) {
@@ -46,24 +48,20 @@ function ResultCard({
     <>
       <div className='flex flex-col gap-4'>
         <div
-          className={`animate__animated card card-compact w-96 bg-base-100 shadow-xl text-gray-800 ${cardAnimationClass}`}
+          className={`animate__animated card card-compact w-full sm:w-96 bg-base-100 shadow-xl text-gray-800 ${cardAnimationClass}`}
         >
           <figure>
             <img
               alt='Yelp Business'
-              className='h-64 w-full object-cover'
+              className='h-56 w-full object-cover'
               src={image_url}
             />
           </figure>
           <div className='card-body'>
-            <h2 className='text-3xl font-bold'>{name}</h2>
-            {display_address.length > 0 && (
-              <div className='text-xl'>
-                {display_address.map((line, index) => (
-                  <div key={index}>{line}</div>
-                ))}
-              </div>
-            )}
+            <div className='flex flex-col gap-1'>
+              <h2 className='text-3xl font-bold'>{name}</h2>
+              <div className='text-xl'>{address}</div>
+            </div>
             {rating && rating > 0 && rating <= 5 && (
               <div className='flex items-center gap-2 w-full'>
                 <img

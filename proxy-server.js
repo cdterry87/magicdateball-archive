@@ -1,4 +1,5 @@
-import { API_KEY, API_TARGET_URL } from 'config/app'
+const API_KEY = 'pS8i0UyHrqi2_XVhRP50ojrIL1s6-77sJ-uqICyY4sfm60lpoXPZ-_whyZroNzTTdqNZSwwx4RdnCoUb_N0M1eQrLwM4REhaXbECEPQhs2SzijJvDjcbSzQgIdSnXXYx'
+const API_TARGET_URL = 'https://api.yelp.com/v3'
 
 const express = require('express');
 const cors = require('cors');
@@ -8,7 +9,7 @@ const app = express();
 app.use(cors());
 
 const apiProxy = createProxyMiddleware('/api', {
-    target: API_TARGET,
+    target: API_TARGET_URL,
     changeOrigin: true,
     pathRewrite: {
         '^/api': '', // Remove the /api prefix when forwarding the request

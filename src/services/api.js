@@ -1,7 +1,25 @@
 import axios from 'axios';
-import { API_PROXY_URL } from 'config/app'
 
-export const searchBusinesses = async (location, latitude, longitude, radius, price, rating, term) => {
+const API_PROXY_URL = process.env.REACT_APP_API_PROXY_SERVER_URL + '/api/businesses/search';
+
+export const searchBusinesses = async (isGeolocationEnabled, location, latitude, longitude, radius, price, rating, term) => {
+    // Only send the specific location-based input fields based on whether geolocation is enabled
+    if (isGeolocationEnabled) {
+        location = undefined;
+    } else {
+        latitude = undefined;
+        longitude = undefined;
+        radius = undefined;
+    }
+
+    // If isGeolocationEnabled is false and location is empty, return null
+    if (!isGeolocationEnabled && !location) {
+        return {
+            error: true
+        };
+    }
+
+    // Try to fetch data from the Yelp API
     try {
         const response = await axios.get(API_PROXY_URL, {
             params: {
@@ -19,7 +37,6 @@ export const searchBusinesses = async (location, latitude, longitude, radius, pr
         });
         return response.data.businesses;
     } catch (error) {
-        console.error('Error fetching data from Yelp API', error);
         throw error;
     }
 }

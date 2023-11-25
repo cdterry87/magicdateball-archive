@@ -62,7 +62,6 @@ function Modal({
                   step='8000'
                   value={radius}
                   onChange={e => setRadius(e.target.value)}
-                  required
                 />
                 <div className='w-full flex justify-between text-xs px-2'>
                   <span>5</span>
@@ -79,9 +78,10 @@ function Modal({
                 <input
                   type='text'
                   className='input input-bordered w-full '
-                  placeholder='City, State'
+                  placeholder='Location (i.e. City, State, etc.)'
                   value={location}
                   onChange={e => setLocation(e.target.value)}
+                  required
                 />
               </div>
             )}

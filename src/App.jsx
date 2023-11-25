@@ -1,21 +1,21 @@
 import { useState, useEffect } from 'react'
+import 'animate.css'
 
 import EightBall from 'components/EightBall'
 import Modal from 'components/Modal'
-import Loading from 'components/Loading'
 import ResultCard from 'components/ResultCard'
 import EmptyResult from 'components/EmptyResult'
+import ErrorOccurred from 'components/ErrorOccurred'
 
 import { searchBusinesses } from 'services/api'
 
 function App() {
-  const [results, setResults] = useState([])
   const [result, setResult] = useState('')
   const [isGeolocationEnabled, setIsGeolocationEnabled] = useState(false)
   const [location, setLocation] = useState('')
   const [latitude, setLatitude] = useState(0)
   const [longitude, setLongitude] = useState(0)
-  const [radius, setRadius] = useState(0)
+  const [radius, setRadius] = useState(24000)
   const [price, setPrice] = useState(2)
   const [rating, setRating] = useState(3)
   const [term, setTerm] = useState('')
@@ -24,6 +24,7 @@ function App() {
   const [isEmptyResult, setIsEmptyResult] = useState(false)
   const [isTryingAgain, setIsTryingAgain] = useState(false)
   const [isTriedAgain, setIsTriedAgain] = useState(false)
+  const [isError, setIsError] = useState(false)
 
   const search = async () => {
     // Close the modal
@@ -43,6 +44,7 @@ function App() {
     // Try the search
     try {
       const businesses = await searchBusinesses(
+        isGeolocationEnabled,
         location,
         latitude,
         longitude,
@@ -51,6 +53,15 @@ function App() {
         rating,
         term
       )
+
+      // If an error is returned, show the empty result component
+      if (businesses && businesses.error) {
+        setIsError(true)
+        setIsEmptyResult(true)
+        setisSearching(false)
+        setIsSearchComplete(true)
+        return
+      }
 
       // Filter the results by rating, if rating is specified
       let yelpResults = businesses
@@ -62,27 +73,26 @@ function App() {
 
       // Save the results to localStorage and state
       localStorage.setItem('yelpResults', JSON.stringify(yelpResults))
-      setResults(yelpResults)
 
       // If there are no results, show the empty result component
       if (yelpResults.length === 0) {
         setIsEmptyResult(true)
       } else {
-        chooseRandom()
+        chooseRandomResult()
       }
 
       // Wait a second before showing the results
       setTimeout(function () {
         setisSearching(false)
         setIsSearchComplete(true)
-      }, 1000)
+      }, 2000)
     } catch (error) {
       console.log('error', error)
     }
   }
 
-  // Choose a random result from the results array and save it to localStorage and state
-  const chooseRandom = () => {
+  // Choose a random result and save it to localStorage and state
+  const chooseRandomResult = () => {
     localStorage.removeItem('mdbResult')
 
     let yelpResults = localStorage.getItem('yelpResults')
@@ -100,7 +110,7 @@ function App() {
     setIsTriedAgain(false)
 
     setTimeout(function () {
-      chooseRandom()
+      chooseRandomResult()
       setIsTryingAgain(false)
       setIsTriedAgain(true)
     }, 1000)
@@ -108,12 +118,12 @@ function App() {
 
   const startOver = () => {
     setResult('')
-    setResults([])
     setisSearching(false)
     setIsSearchComplete(false)
     setIsEmptyResult(false)
     setIsTryingAgain(false)
     setIsTriedAgain(false)
+    setIsError(false)
     localStorage.removeItem('yelpResults')
     localStorage.removeItem('mdbResult')
   }
@@ -131,7 +141,6 @@ function App() {
     // Get yelpResults from localStorage if they exist
     const yelpResults = localStorage.getItem('yelpResults') ?? null
     if (yelpResults) {
-      setResults(JSON.parse(yelpResults))
       setIsSearchComplete(true)
     }
 
@@ -178,11 +187,13 @@ function App() {
           position => {
             localStorage.setItem('mdbLatitude', position.coords.latitude)
             localStorage.setItem('mdbLongitude', position.coords.longitude)
+            localStorage.removeItem('mdbLocation')
 
             setIsGeolocationEnabled(true)
             setLatitude(position.coords.latitude)
             setLongitude(position.coords.longitude)
             setRadius(24000)
+            setLocation('')
           },
           () => {
             localStorage.removeItem('mdbLatitude')
@@ -201,7 +212,10 @@ function App() {
   }, [])
 
   return (
-    <div id='app' className='min-h-screen flex items-center justify-center'>
+    <div
+      id='app'
+      className='min-h-screen flex items-center justify-center overflow-y-auto'
+    >
       <div className='flex flex-col gap-6 items-center justify-center'>
         <div className='flex flex-col gap-2'>
           <h1 className='text-3xl sm:text-5xl text-center font-bold'>
@@ -211,9 +225,14 @@ function App() {
             Where do you want to eat? Just ask the Magic Date Ball!
           </h2>
         </div>
-        {isSearching && !isSearchComplete && <Loading />}
-        {!isSearching && !isSearchComplete && <EightBall />}
-        {!isSearching && isSearchComplete && !isEmptyResult && (
+        {isError && <ErrorOccurred startOver={startOver} />}
+        {(!isError || isSearching) && !isSearchComplete && (
+          <EightBall
+            isSearching={isSearching}
+            isSearchComplete={isSearchComplete}
+          />
+        )}
+        {!isError && !isSearching && isSearchComplete && !isEmptyResult && (
           <ResultCard
             result={result}
             tryAgain={tryAgain}
@@ -223,7 +242,7 @@ function App() {
             isTriedAgain={isTriedAgain}
           />
         )}
-        {!isSearching && isSearchComplete && isEmptyResult && (
+        {!isError && !isSearching && isSearchComplete && isEmptyResult && (
           <EmptyResult startOver={startOver} />
         )}
         <div className='flex flex-col gap-1 text-center'>
