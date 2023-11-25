@@ -3,15 +3,16 @@ function Modal({
   isGeolocationEnabled,
   disableGeolocation,
   setLocation,
+  location,
   setRadius,
+  radius,
   setPrice,
+  price,
   setRating,
-  setTerm
+  rating,
+  setTerm,
+  term
 }) {
-  const radiusValues = [8000, 16000, 24000, 32000, 40000]
-  const priceValues = [1, 2, 3, 4]
-  const ratingValues = [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5]
-
   return (
     <>
       <dialog id='mdb__modal' className='modal text-gray-900'>
@@ -22,7 +23,7 @@ function Modal({
             </button>
           </form>
           <h3 className='font-bold text-4xl'>Preferences</h3>
-          <div className='flex flex-col gap-4'>
+          <div className='flex flex-col gap-6'>
             {isGeolocationEnabled && (
               <div role='alert' className='alert bg-pink-600 text-white'>
                 <svg
@@ -55,11 +56,12 @@ function Modal({
                 <h4 className='font-semibold text-xl'>Radius (miles)</h4>
                 <input
                   type='range'
-                  min='0'
-                  max='4'
+                  min='8000'
+                  max='40000'
                   className='range'
-                  step='1'
-                  onChange={e => setRadius(radiusValues[e.target.value])}
+                  step='8000'
+                  value={radius}
+                  onChange={e => setRadius(e.target.value)}
                   required
                 />
                 <div className='w-full flex justify-between text-xs px-2'>
@@ -78,6 +80,7 @@ function Modal({
                   type='text'
                   className='input input-bordered w-full '
                   placeholder='City, State'
+                  value={location}
                   onChange={e => setLocation(e.target.value)}
                 />
               </div>
@@ -87,11 +90,12 @@ function Modal({
               <h4 className='font-semibold text-xl'>Price</h4>
               <input
                 type='range'
-                min='0'
-                max='3'
+                min='1'
+                max='4'
                 className='range'
                 step='1'
-                onChange={e => setPrice(priceValues[e.target.value])}
+                value={price}
+                onChange={e => setPrice(e.target.value)}
               />
               <div className='w-full flex justify-between text-xs px-2'>
                 <span>$</span>
@@ -105,11 +109,12 @@ function Modal({
               <h4 className='font-semibold text-xl'>Minimum Rating</h4>
               <input
                 type='range'
-                min='0'
-                max='7'
+                min='1'
+                max='4.5'
                 className='range'
-                step='1'
-                onChange={e => setRating(ratingValues[e.target.value])}
+                step='.5'
+                value={rating}
+                onChange={e => setRating(e.target.value)}
               />
               <div className='w-full flex justify-between text-xs px-2'>
                 <span>1</span>
@@ -129,10 +134,10 @@ function Modal({
                 type='text'
                 className='input input-bordered w-full '
                 placeholder='Sushi, Tacos, etc.'
+                value={term}
                 onChange={e => setTerm(e.target.value)}
               />
             </div>
-            <hr />
             <div className='flex items-center justify-center'>
               <button
                 className='btn bg-gradient-to-r from-fuchsia-700 to-red-600 text-white text-xl'

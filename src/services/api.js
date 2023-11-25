@@ -5,12 +5,12 @@ export const searchBusinesses = async (location, latitude, longitude, radius, pr
     try {
         const response = await axios.get(API_PROXY_URL, {
             params: {
-                location,
+                location: location || undefined,
                 latitude: latitude || undefined,
                 longitude: longitude || undefined,
                 radius: radius || undefined,
-                price,
-                rating,
+                price: price || undefined,
+                rating: rating || undefined,
                 term: term || undefined,
                 sort_by: 'rating',
                 limit: 50,
