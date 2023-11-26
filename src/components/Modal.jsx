@@ -56,7 +56,9 @@ function Modal({
             )}
             {isGeolocationEnabled && (
               <div>
-                <h4 className='font-semibold text-xl'>Radius (miles)</h4>
+                <h4 className='font-semibold text-xl'>
+                  Search Radius (in miles)
+                </h4>
                 <input
                   type='range'
                   min='8000'
@@ -77,7 +79,7 @@ function Modal({
             )}
             {!isGeolocationEnabled && (
               <div>
-                <h4 className='font-semibold text-xl'>Location</h4>
+                <h4 className='font-semibold text-xl'>Search Location</h4>
                 <input
                   type='text'
                   className='input input-bordered w-full '
@@ -90,7 +92,7 @@ function Modal({
             )}
             <hr />
             <div>
-              <h4 className='font-semibold text-xl'>Price</h4>
+              <h4 className='font-semibold text-xl'>Price Range</h4>
               <input
                 type='range'
                 min='1'

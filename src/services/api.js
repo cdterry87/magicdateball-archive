@@ -19,6 +19,14 @@ export const searchBusinesses = async (isGeolocationEnabled, location, latitude,
         };
     }
 
+    // When price is specified, get all values before it and turn it into a comma separated list
+    const allPrices = ['1', '2', '3', '4'];
+    const priceIndex = allPrices.indexOf(price);
+    let priceRange = '1,2,3,4';
+    if (priceIndex !== -1) {
+        priceRange = allPrices.slice(0, priceIndex + 1).join(',');
+    }
+
     // Try to fetch data from the Yelp API
     try {
         const response = await axios.get(API_PROXY_URL, {
@@ -27,7 +35,7 @@ export const searchBusinesses = async (isGeolocationEnabled, location, latitude,
                 latitude: latitude || undefined,
                 longitude: longitude || undefined,
                 radius: radius || undefined,
-                price: price || undefined,
+                price: priceRange || undefined,
                 rating: rating || undefined,
                 term: term || undefined,
                 sort_by: 'rating',
