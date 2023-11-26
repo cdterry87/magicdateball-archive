@@ -1,9 +1,8 @@
-name: Deploy to Digital Ocean
+name: CI/CD
 
 on:
   push:
-    branches:
-      - prod
+    branches: [production]
 
 jobs:
   deploy:
