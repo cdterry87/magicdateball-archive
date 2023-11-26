@@ -16,8 +16,8 @@ function App() {
   const [latitude, setLatitude] = useState(0)
   const [longitude, setLongitude] = useState(0)
   const [radius, setRadius] = useState(24000)
-  const [price, setPrice] = useState(2)
-  const [rating, setRating] = useState(3)
+  const [price, setPrice] = useState('2,3')
+  const [rating, setRating] = useState(3.5)
   const [term, setTerm] = useState('')
   const [isSearching, setisSearching] = useState(false)
   const [isSearchComplete, setIsSearchComplete] = useState(false)
@@ -136,6 +136,33 @@ function App() {
     localStorage.removeItem('mdbLongitude')
   }
 
+  const promptGeolocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          localStorage.setItem('mdbLatitude', position.coords.latitude)
+          localStorage.setItem('mdbLongitude', position.coords.longitude)
+          localStorage.removeItem('mdbLocation')
+
+          setIsGeolocationEnabled(true)
+          setLatitude(position.coords.latitude)
+          setLongitude(position.coords.longitude)
+          setRadius(24000)
+          setLocation('')
+        },
+        () => {
+          localStorage.removeItem('mdbLatitude')
+          localStorage.removeItem('mdbLongitude')
+
+          setIsGeolocationEnabled(false)
+          setLatitude(0)
+          setLongitude(0)
+          setRadius(0)
+        }
+      )
+    }
+  }
+
   // useEffect on initial load
   useEffect(() => {
     // Get yelpResults from localStorage if they exist
@@ -182,30 +209,7 @@ function App() {
 
     // Enable or disable geolocation
     if (!mdbLatitude && !mdbLongitude) {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          position => {
-            localStorage.setItem('mdbLatitude', position.coords.latitude)
-            localStorage.setItem('mdbLongitude', position.coords.longitude)
-            localStorage.removeItem('mdbLocation')
-
-            setIsGeolocationEnabled(true)
-            setLatitude(position.coords.latitude)
-            setLongitude(position.coords.longitude)
-            setRadius(24000)
-            setLocation('')
-          },
-          () => {
-            localStorage.removeItem('mdbLatitude')
-            localStorage.removeItem('mdbLongitude')
-
-            setIsGeolocationEnabled(false)
-            setLatitude(0)
-            setLongitude(0)
-            setRadius(0)
-          }
-        )
-      }
+      promptGeolocation()
     } else {
       setIsGeolocationEnabled(true)
     }
@@ -266,6 +270,7 @@ function App() {
         search={search}
         isGeolocationEnabled={isGeolocationEnabled}
         disableGeolocation={disableGeolocation}
+        promptGeolocation={promptGeolocation}
         setLocation={setLocation}
         location={location}
         setRadius={setRadius}

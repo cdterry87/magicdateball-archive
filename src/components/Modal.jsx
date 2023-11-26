@@ -2,6 +2,7 @@ function Modal({
   search,
   isGeolocationEnabled,
   disableGeolocation,
+  promptGeolocation,
   setLocation,
   location,
   setRadius,
@@ -27,7 +28,7 @@ function Modal({
             {isGeolocationEnabled && (
               <div
                 role='alert'
-                className='alert bg-pink-600 text-white text-lg'
+                className='alert bg-pink-600 text-white text-xl'
               >
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
@@ -68,7 +69,7 @@ function Modal({
                   value={radius}
                   onChange={e => setRadius(e.target.value)}
                 />
-                <div className='w-full flex justify-between text-xs px-2'>
+                <div className='w-full flex justify-between px-2 text-sm'>
                   <span>5</span>
                   <span>10</span>
                   <span>15</span>
@@ -78,11 +79,41 @@ function Modal({
               </div>
             )}
             {!isGeolocationEnabled && (
+              <div
+                role='alert'
+                className='alert bg-pink-600 text-white text-xl'
+              >
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  fill='none'
+                  stroke='currentColor'
+                  viewBox='0 0 24 24'
+                  className='shrink-0 w-6 h-6'
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    strokeWidth='2'
+                    d='M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
+                  ></path>
+                </svg>
+                <div>
+                  <p>We are not using your location to find nearby results.</p>
+                  <button
+                    className='underline'
+                    onClick={() => promptGeolocation()}
+                  >
+                    Click here to allow us to use your location.
+                  </button>
+                </div>
+              </div>
+            )}
+            {!isGeolocationEnabled && (
               <div>
                 <h4 className='font-semibold text-xl'>Search Location</h4>
                 <input
                   type='text'
-                  className='input input-bordered w-full '
+                  className='input input-bordered w-full text-base focus:outline-none'
                   placeholder='Location (i.e. City, State, etc.)'
                   value={location}
                   onChange={e => setLocation(e.target.value)}
@@ -92,22 +123,18 @@ function Modal({
             )}
             <hr />
             <div>
-              <h4 className='font-semibold text-xl'>Price Range</h4>
-              <input
-                type='range'
-                min='1'
-                max='4'
-                className='range range-xs'
-                step='1'
+              <h4 className='font-semibold text-xl'>Price Selection</h4>
+              <select
+                className='select select-bordered w-full focus:outline-none text-base'
                 value={price}
                 onChange={e => setPrice(e.target.value)}
-              />
-              <div className='w-full flex justify-between text-xs px-2'>
-                <span>$</span>
-                <span>$$</span>
-                <span>$$$</span>
-                <span>$$$$</span>
-              </div>
+              >
+                <option value='1,2,3,4'>Anything Goes ($ - $$$$)</option>
+                <option value='1'>Fast and Cheap ($)</option>
+                <option value='1,2'>Casual ($ - $$)</option>
+                <option value='2,3'>Date Night ($$ - $$$)</option>
+                <option value='4'>Special Occasions ($$$$)</option>
+              </select>
             </div>
             <hr />
             <div>
@@ -121,7 +148,7 @@ function Modal({
                 value={rating}
                 onChange={e => setRating(e.target.value)}
               />
-              <div className='w-full flex justify-between text-xs px-2'>
+              <div className='w-full flex justify-between text-sm px-2'>
                 <span>1</span>
                 <span>1.5</span>
                 <span>2</span>
@@ -137,7 +164,7 @@ function Modal({
               <h4 className='font-semibold text-xl'>Search Term (Optional)</h4>
               <input
                 type='text'
-                className='input input-bordered w-full '
+                className='input input-bordered w-full focus:outline-none text-base'
                 placeholder='Sushi, Tacos, etc.'
                 value={term}
                 onChange={e => setTerm(e.target.value)}
