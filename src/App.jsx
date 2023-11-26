@@ -214,9 +214,9 @@ function App() {
   return (
     <div
       id='app'
-      className='min-h-screen flex items-center justify-center overflow-y-auto'
+      className='min-h-screen flex flex-col items-center justify-center overflow-y-auto'
     >
-      <div className='flex flex-col gap-6 items-center justify-center'>
+      <div className='flex flex-col gap-8 items-center justify-center pb-12'>
         <div className='flex flex-col gap-2'>
           <h1 className='text-4xl sm:text-6xl text-center font-bold'>
             Magic Date Ball
