@@ -1,0 +1,32 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [prod]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20.x'
+
+      - name: Install project dependencies
+        run: npm ci
+
+      - name: Build React app
+        run: npm run build
+
+      - name: Deploy to Digital Ocean
+        run: |
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} 'cd ${{ secrets.SSH_DIRECTORY }} && git pull'
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} 'cd ${{ secrets.SSH_DIRECTORY }} && npm install'
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} 'cd ${{ secrets.SSH_DIRECTORY }} && npm run build'
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} 'sudo systemctl restart nginx'
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} 'pm2 restart all'
