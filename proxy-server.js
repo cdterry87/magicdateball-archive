@@ -32,7 +32,7 @@ app.get('*', (req, res) => {
     res.sendFile('build/index.html', { root: __dirname }); // Update 'build' to your actual build folder
 });
 
-const port = process.env.PORT || 3001;
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-});
+// const port = process.env.PORT || 3001;
+// app.listen(port, () => {
+//     console.log(`Server is running on port ${port}`);
+// });
