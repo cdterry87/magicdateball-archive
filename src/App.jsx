@@ -218,7 +218,7 @@ function App() {
     >
       <div className='flex flex-col gap-6 items-center justify-center'>
         <div className='flex flex-col gap-2'>
-          <h1 className='text-3xl sm:text-5xl text-center font-bold'>
+          <h1 className='text-4xl sm:text-6xl text-center font-bold'>
             Magic Date Ball
           </h1>
           <h2 className='text-lg sm:text-xl text-center font-semibold'>

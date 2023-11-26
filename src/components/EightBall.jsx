@@ -1,5 +1,3 @@
-import Searching from './Searching'
-
 function EightBall({ isSearching, isSearchComplete }) {
   let eightBallAnimationClass
   if (isSearching) {
@@ -18,7 +16,7 @@ function EightBall({ isSearching, isSearchComplete }) {
       >
         {isSearching && (
           <div className='bg-blue-900 h-32 w-32 rounded-full text-6xl text-white flex items-center justify-center'>
-            ?
+            <span className='loading loading-spinner loading-2xl'></span>
           </div>
         )}
         {!isSearching && (
@@ -27,12 +25,10 @@ function EightBall({ isSearching, isSearchComplete }) {
           </div>
         )}
       </div>
-      {isSearching && <Searching />}
-      {!isSearching && (
-        <h3 className='text-xl sm:text-3xl text-center'>
-          Click the 8-ball to begin!
-        </h3>
-      )}
+      <div className='text-xl md:text-3xl text-center'>
+        {isSearching && <h3>Searching for restaurants in your area...</h3>}
+        {!isSearching && <h3>Click the 8-ball to begin!</h3>}
+      </div>
     </>
   )
 }
