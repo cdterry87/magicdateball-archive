@@ -218,7 +218,7 @@ function App() {
   return (
     <div
       id='app'
-      className='min-h-screen flex flex-col items-center justify-center overflow-y-auto'
+      className='min-h-screen flex flex-col items-center justify-center overflow-y-auto mt-6'
     >
       <div className='flex flex-col gap-8 items-center justify-center pb-12'>
         <div className='flex flex-col gap-2'>
