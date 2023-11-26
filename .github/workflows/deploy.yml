@@ -17,13 +17,11 @@ jobs:
         with:
           node-version: '20.x'
 
-      - name: Install Dependencies
-        run: |
-          npm install
+      - name: Install project dependencies
+        run: npm ci
 
-      - name: Build React App
-        run: |
-          npm run build
+      - name: Build React app
+        run: npm run build
 
       - name: Deploy to Digital Ocean
         run: |
