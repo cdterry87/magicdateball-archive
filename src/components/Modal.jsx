@@ -45,7 +45,7 @@ function Modal({
                   ></path>
                 </svg>
                 <div>
-                  <p>We are using your location to find nearby results.</p>
+                  <p>We are using your location to find nearby restaurants.</p>
                   <button
                     className='underline'
                     onClick={() => disableGeolocation()}
@@ -98,7 +98,9 @@ function Modal({
                   ></path>
                 </svg>
                 <div>
-                  <p>We are not using your location to find nearby results.</p>
+                  <p>
+                    We are not using your location to find nearby restaurants.
+                  </p>
                   <button
                     className='underline'
                     onClick={() => promptGeolocation()}

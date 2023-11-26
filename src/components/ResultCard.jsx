@@ -46,7 +46,7 @@ function ResultCard({
 
   return (
     <>
-      <div className='flex flex-col gap-4'>
+      <div className='flex flex-col gap-4 mx-4'>
         <div
           className={`animate__animated card card-compact w-full sm:w-96 bg-base-100 shadow-xl text-gray-800 ${cardAnimationClass}`}
         >
