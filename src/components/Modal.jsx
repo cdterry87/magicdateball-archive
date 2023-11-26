@@ -23,9 +23,12 @@ function Modal({
             </button>
           </form>
           <h3 className='font-bold text-4xl'>Preferences</h3>
-          <div className='flex flex-col gap-6'>
+          <div className='flex flex-col gap-5'>
             {isGeolocationEnabled && (
-              <div role='alert' className='alert bg-pink-600 text-white'>
+              <div
+                role='alert'
+                className='alert bg-pink-600 text-white text-lg'
+              >
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
                   fill='none'
@@ -40,15 +43,15 @@ function Modal({
                     d='M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
                   ></path>
                 </svg>
-                <span>
-                  We are using your location to find nearby results.
+                <div>
+                  <p>We are using your location to find nearby results.</p>
                   <button
                     className='underline'
                     onClick={() => disableGeolocation()}
                   >
                     Click here to manually set your location.
                   </button>
-                </span>
+                </div>
               </div>
             )}
             {isGeolocationEnabled && (
@@ -58,7 +61,7 @@ function Modal({
                   type='range'
                   min='8000'
                   max='40000'
-                  className='range'
+                  className='range range-xs'
                   step='8000'
                   value={radius}
                   onChange={e => setRadius(e.target.value)}
@@ -92,7 +95,7 @@ function Modal({
                 type='range'
                 min='1'
                 max='4'
-                className='range'
+                className='range range-xs'
                 step='1'
                 value={price}
                 onChange={e => setPrice(e.target.value)}
@@ -111,7 +114,7 @@ function Modal({
                 type='range'
                 min='1'
                 max='4.5'
-                className='range'
+                className='range range-xs'
                 step='.5'
                 value={rating}
                 onChange={e => setRating(e.target.value)}
